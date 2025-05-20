@@ -1,12 +1,13 @@
-
 import { useContext, useEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import { allContext } from '../context/Context';
 import axios from 'axios';
-// import { toast } from 'react-toastify';
 import toast, { Toaster } from 'react-hot-toast';
-const staticPath = import.meta.env.VITE_STATICPATH;
+const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
+const staticPath = import.meta.env.VITE_STATIC_PATH;
+
+
 export default function AddJob() {
      const editorRef = useRef(null);
      const quillInstance = useRef(null);
@@ -36,7 +37,7 @@ export default function AddJob() {
           const level = e.target.level.value
           const salary = e.target.salary.value
           const adminEmail = userRegisterData.uemail
-          const adminImage = "http://localhost:8000/uploads/CompaniesLogo/"+logoUrl
+          const adminImage = `${staticPath}/uploads/CompaniesLogo/`+logoUrl
           const adminName = userName
           const dataObj = { title, description, category, location, level, salary, adminEmail, adminImage,adminName}
           
@@ -44,7 +45,7 @@ export default function AddJob() {
 
 
 
-          axios.post(`${staticPath}insert`, dataObj)
+          axios.post(`${staticAdminPath}insert`, dataObj)
                .then((res) => {
                     if (res.data.success) {
                          toast.success("Job Created Successfully")

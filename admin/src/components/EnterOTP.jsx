@@ -2,7 +2,7 @@ import { useState } from "react";
 import SelectLogo from "./SelectLogo";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
-const staticPath = import.meta.env.VITE_STATICPATH;
+const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 
 export default function EnterOTP({email}) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -32,7 +32,7 @@ export default function EnterOTP({email}) {
       uemail
     }
 
-    axios.post(`${staticPath}checkOTP`,otpObj)
+    axios.post(`${staticAdminPath}checkOTP`,otpObj)
     .then((res)=>{
       if (res.data.status===1){
         toast.success("Registration Successfull")

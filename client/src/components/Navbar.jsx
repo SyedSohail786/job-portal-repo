@@ -6,6 +6,7 @@ import { allContext } from "../context/Context";
 import axios from "axios";
 import { useRef } from 'react';
 import Cookies from 'js-cookie';
+const WEBSITE_API_BASE_URL = import.meta.env.VITE_WEBSITE_API_BASE_URL
 
 export default function Navbar() {
   const { openSignIn } = useClerk();
@@ -37,7 +38,7 @@ export default function Navbar() {
       !hasSavedUser.current && Cookies.get('_Session-logged')===undefined
     ) {
       hasSavedUser.current = true;
-      axios.post("http://localhost:8000/website/saveUsersData", clerkUser)
+      axios.post(`${WEBSITE_API_BASE_URL}/website/saveUsersData`, clerkUser)
         .then((res) => res.data)
         .catch((err) => err);
         Cookies.set("_Session-logged",true)

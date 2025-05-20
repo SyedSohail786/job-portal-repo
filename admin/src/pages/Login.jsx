@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import axios from 'axios';
 import EnterOTP from "../components/EnterOTP";
-const staticPath = import.meta.env.VITE_STATICPATH;
+const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 import { allContext } from '../context/Context';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
@@ -37,11 +37,11 @@ export default function Login() {
           const upassword = e.target.password.value
           const emailObj = { uemail, otp: "", uname }
           setUserEmailForOtp(emailObj)
-          axios.post(`${staticPath}email-check`, emailObj)
+          axios.post(`${staticAdminPath}email-check`, emailObj)
                .then((res) => {
                     if (res.data.status) {
                          setIsSending(true)
-                         axios.post(`${staticPath}sendOtp`, emailObj)
+                         axios.post(`${staticAdminPath}sendOtp`, emailObj)
                               .then((res) => {
                                    if (res.data.status) {
 
@@ -74,7 +74,7 @@ export default function Login() {
           const loginEmail = e.target.email.value;
           const loginPass = e.target.password.value;
           const loginObj = { loginEmail, loginPass }
-          axios.post(`${staticPath}check-Login-Details`, loginObj)
+          axios.post(`${staticAdminPath}check-Login-Details`, loginObj)
                .then((res) => {
                     if (res.data.status === 1) {
                          toast.success("Login Successfull")
@@ -82,7 +82,7 @@ export default function Login() {
                          setUserRegisterData({ uemail: loginEmail });
                          Cookies.set('_sessionfastJob', JSON.stringify(loginEmail))
 
-                         axios.post(`${staticPath}getLogo`, { loginEmail })
+                         axios.post(`${staticAdminPath}getLogo`, { loginEmail })
                               .then((res) => {
                                    setLogoUrl(res.data.logoName)
                                    setUserName(res.data.userName)

@@ -6,6 +6,7 @@ import Footer from "../components/Footer"
 import { allContext } from '../context/Context'
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
+const WEBSITE_API_BASE_URL = import.meta.env.VITE_WEBSITE_API_BASE_URL
 
 export default function Applied() {
   const [isEdit, setIsEdit] = useState(false)
@@ -33,7 +34,7 @@ export default function Applied() {
       setIsEdit(false);
 
 
-      axios.post("http://localhost:8000/website/saveResume",resumeData)
+      axios.post(`${WEBSITE_API_BASE_URL}/website/saveResume`,resumeData)
       .then((res)=>{
         res.data.status? toast.success("Resume Uploaded Successfully"): toast.error("Internal Server Error")
       })

@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import Navbar from "../components/Navbar"
 import { useParams } from 'react-router-dom'
 import { allContext } from '../context/Context'
-import { assets, jobsData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import JobCard from "../components/Jobcard"
 import Footer from "../components/Footer"
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
-
+const WEBSITE_API_BASE_URL = import.meta.env.VITE_WEBSITE_API_BASE_URL
 
 
 export default function ApplyJob() {
@@ -35,7 +35,7 @@ export default function ApplyJob() {
       userName, userEmail, jobTitle, jobLocation, _id
     }
 
-    axios.post("http://localhost:8000/website/saveAppliedJobs", appliedUsersData)
+    axios.post(`${WEBSITE_API_BASE_URL}/website/saveAppliedJobs`, appliedUsersData)
       .then((res) => {
         if (res.data.status) {
           setapplied(res.data.success)

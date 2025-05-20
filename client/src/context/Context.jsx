@@ -1,7 +1,6 @@
 import axios from 'axios'
-import React, { createContext, useEffect, useState } from 'react'
-// import { jobsData } from '../assets/assets'
-
+import { createContext, useEffect, useState } from 'react'
+const WEBSITE_API_BASE_URL = import.meta.env.VITE_WEBSITE_API_BASE_URL
 export const allContext = createContext()
 
 export default function Context({ children }) {
@@ -19,23 +18,30 @@ export default function Context({ children }) {
   })
   const [jobsData, setJobsData] = useState([])
   const [jobInfo, setJobInfo] = useState([])
-  useEffect(() => {
-    axios.get("http://localhost:8000/website/viewJobs")
+
+  //FETCHING JOBS DATA FROM API
+
+  const fetchJobs = () => {
+    axios.get(`${WEBSITE_API_BASE_URL}/website/viewJobs`)
       .then((res) => {
         const jobs = res.data.msg || []
         setJobsData(jobs)
-        setJobInfo(jobs) // ✅ only set when jobsData is available
+        setJobInfo(jobs)
       })
       .catch((err) => console.error("Error fetching jobs:", err))
+  }
+
+  useEffect(() => {
+    fetchJobs();
   }, [])
 
-  
   const obj = {
     setIsSearched, setSearchValue,
     isSearched, searchValue, jobInfo,
     setJobInfo, setClerkUser, clerkUser,
-    setJobsData, jobsData
+    setJobsData, jobsData, fetchJobs 
   }
+
 
   return (
     <allContext.Provider value={obj}>

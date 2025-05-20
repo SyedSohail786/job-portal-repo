@@ -3,7 +3,11 @@ import { allContext } from '../context/Context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-const staticPath = import.meta.env.VITE_STATICPATH;
+const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
+
+
+
+
 const SelectLogo = () => {
   const navigate = useNavigate()
   const [selectedFile, setSelectedFile] = useState(null);
@@ -24,10 +28,10 @@ const SelectLogo = () => {
 
 
     try {
-      const res = await axios.post(`${staticPath}admin-register`, formData);
+      const res = await axios.post(`${staticAdminPath}admin-register`, formData);
       // console.log('✅ Success:',formData);
 
-      axios.post(`${staticPath}getLogo`, { loginEmail: userRegisterData.uemail }).then((res) => {
+      axios.post(`${staticAdminPath}getLogo`, { loginEmail: userRegisterData.uemail }).then((res) => {
         setLogoUrl(res.data.logoName)
         setUserName(res.data.userName)
         Cookies.set('_sessionfastJob', JSON.stringify(userRegisterData.uemail))

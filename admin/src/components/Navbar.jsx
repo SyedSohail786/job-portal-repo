@@ -2,6 +2,9 @@ import { useContext,useState } from "react";
 import { allContext } from "../context/Context";
 import Swal from 'sweetalert2'
 import Cookies from "js-cookie";
+
+
+
 export default function Navbar() {
   const [logout, setLogout] = useState(true)
   const { setLogin,logoUrl,userName } = useContext(allContext)
