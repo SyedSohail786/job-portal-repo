@@ -27,7 +27,7 @@ Sentry.setupExpressErrorHandler(app);
      
 // })
 
-FOR MONGODB ATLAS
+// FOR MONGODB ATLAS
 mongoose.connect(process.env.DATABASE_URI + process.env.DATABASE_NAME)
 .then(() => console.log(`${process.env.DATABASE_NAME} Database Connected!`));
 app.listen(process.env.PORTNUMBER, ()=>{
