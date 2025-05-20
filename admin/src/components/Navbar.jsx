@@ -1,0 +1,48 @@
+import { useContext,useState } from "react";
+import { allContext } from "../context/Context";
+import Swal from 'sweetalert2'
+import Cookies from "js-cookie";
+export default function Navbar() {
+  const [logout, setLogout] = useState(true)
+  const { setLogin,logoUrl,userName } = useContext(allContext)
+  const logoutBtn = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#155dfc",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Logout"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Cookies.remove('_sessionfastJob')
+        setLogin(false)
+        Swal.fire({
+          title: "Logged OUt",
+          text: "You have been Logged out",
+          icon: "success"
+        });
+      }
+    });
+  }
+  return (
+    <nav className="w-full bg-white py-4 px-6 shadow-md relative z-10">
+      <div className="mx-auto flex items-center justify-between">
+        <div className="text-2xl font-bold text-blue-600">
+          Fast<span className="text-gray-700">Job</span>
+        </div>
+        <div className="flex justify-center items-center gap-3 relative">
+          <p className="font-semibold text-sm sm:text-base capitalize">Hi, {userName}</p>
+            <img src={`http://localhost:8000/uploads/CompaniesLogo/${logoUrl}`} className="h-10 w-10 rounded-[50px] border border-gray-400" alt="companyLogo" onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)}/>
+          <div className={`absolute top-10 right-2 border bg-white cursor-pointer border-gray-200 hover:bg-blue-100  rounded ${logout ? "hidden" : ""}`} onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} onClick={logoutBtn}
+          >
+            <p className="  px-4 py-2">Logout</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+
