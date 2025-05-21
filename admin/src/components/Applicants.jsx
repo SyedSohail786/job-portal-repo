@@ -3,11 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { allContext } from "../context/Context";
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
+const staticPath = import.meta.env.VITE_STATIC_PATH
 
 export default function Applicants() {
      const { userRegisterData } = useContext(allContext)
      const [applicants, setApplicants] = useState([])
-     const [loader, setLoader]= useState(false)
+     const [loader, setLoader] = useState(false)
      useEffect(() => {
           axios.post(`${staticAdminPath}getApplicants`, userRegisterData)
                .then((res) => {
@@ -15,6 +16,24 @@ export default function Applicants() {
                     setLoader(true)
                })
      }, [])
+
+
+     const handleDecision = (userEmail, jobTitle, action) => {
+  axios.post(`${staticAdminPath}updateApplicantAction`, {
+    userEmail,
+    jobTitle,
+    action
+  })
+  .then((res) => {
+    alert(res.data.msg || "Updated successfully!");
+    // Optionally: reload applicants list
+  })
+  .catch((err) => {
+    console.error(err);
+    alert("Something went wrong");
+  });
+};
+
      return (
 
           <div>
@@ -46,15 +65,18 @@ export default function Applicants() {
                                                                            <td className='px-4 py-2'>{items.jobTitle}</td>
                                                                            <td className='px-4 py-2'>{items.jobLocation}</td>
                                                                            <td className='px-4 py-2  max-sm:hidden'>
-                                                                                <div className='flex items-center gap-2 cursor-pointer'>
+                                                                                <div className='flex items-center gap-2 cursor-pointer' onClick={() => {
+                                                                                     window.open(`${staticPath}uploads/resume/${items.resume}`, "_blank");
+                                                                                }}
+                                                                                >
                                                                                      <span>Download</span>
                                                                                      <FaDownload className='text-sm' />
                                                                                 </div>
                                                                            </td>
                                                                            <td className='px-4 py-2  max-sm:hidden'>
                                                                                 <div className='flex items-center gap-2'>
-                                                                                     <button className='text-green-600 hover:text-blue-800 font-medium'>Accept</button> |
-                                                                                     <button className='text-red-600 hover:text-blue-800 font-medium'>Reject</button>
+                                                                                     <button className='text-green-600 hover:text-blue-800 font-medium' onClick={() => handleDecision(items.userEmail, items.jobTitle, 1)}>Accept</button> |
+                                                                                     <button className='text-red-600 hover:text-blue-800 font-medium' onClick={() => handleDecision(items.userEmail, items.jobTitle, )}>Reject</button>
                                                                                 </div>
                                                                            </td>
                                                                       </tr>

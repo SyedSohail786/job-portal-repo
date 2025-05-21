@@ -8,12 +8,15 @@ const cors= require("cors");
 const { MainRoute } = require("./MainRoute");
 app.use(cors())
 app.use(express.json())
+const path = require("path");
 
 
 //All Routes
 app.use(MainRoute)
 //All Pictures Uplodation
 app.use("/uploads/CompaniesLogo", express.static("uploads/CompaniesLogo"))
+// To make resume files publicly downloadable
+app.use("/uploads/resume", express.static(path.join(__dirname, "uploads/resume")));
 
 //Sentry Initialization
 Sentry.setupExpressErrorHandler(app);

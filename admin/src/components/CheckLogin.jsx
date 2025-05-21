@@ -16,13 +16,6 @@ export default function CheckLogin() {
                }, 1000);
 
           }
-
-          // if(Cookies.get('_sessionfastJob')!==undefined){
-          //       navigate('/dashboard');
-          // }else{
-          //      navigate('/');
-          // }
-          // console.log(Cookies.get('_sessionfastJob').replace(/^["']|["']$/g, '').trim().toLowerCase())
      }, [checkLogin, navigate]);
 
      return null

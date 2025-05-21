@@ -4,6 +4,9 @@ const { otpModel } = require("../../model/OtpModel");
 const bcrypt = require('bcrypt');
 const { userModel } = require("../../model/userModel");
 const saltRounds = 10;
+const path = require("path");
+const fs = require("fs");
+
 
 const insertController = async (req, res) => {
      try {
@@ -307,10 +310,48 @@ const getApplicantsData = async (req, res) => {
      }
 };
 
+const downloadResume = async(req,res)=>{
+     const filename = req.params.filename;
+    const filePath = path.join(__dirname, "uploads/resume/", filename);
+
+    // Check if file exists
+    if (fs.existsSync(filePath)) {
+        res.download(filePath); // prompts file download in browser
+    } else {
+        res.status(404).json({ status: false, msg: "File not found" });
+    }
+
+}
+
+const updateApplicantAction=async(req,res)=>{
+
+     try {
+    const { userEmail, jobTitle, action } = req.body;
+
+    const updated = await jobModel.findOneAndUpdate(
+      { jobTitle, "jobApplicants.userEmail": userEmail },
+      {
+        $set: {
+          "jobApplicants.$.action": action
+        }
+      },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ status: false, msg: "Applicant not found" });
+    }
+
+    return res.json({ status: true, msg: "Action updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: false, msg: "Server error" });
+  }
+}
 
 module.exports = {
      insertController, viewController,
      AdminRegisterController, emailCheckController,
      checkOTP, sendOtp, CheckLoginDetails, getLogo,
-     getApplicantsData
+     getApplicantsData,downloadResume,updateApplicantAction
 };

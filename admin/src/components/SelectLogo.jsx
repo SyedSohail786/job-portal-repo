@@ -29,8 +29,6 @@ const SelectLogo = () => {
 
     try {
       const res = await axios.post(`${staticAdminPath}admin-register`, formData);
-      // console.log('✅ Success:',formData);
-
       axios.post(`${staticAdminPath}getLogo`, { loginEmail: userRegisterData.uemail }).then((res) => {
         setLogoUrl(res.data.logoName)
         setUserName(res.data.userName)
