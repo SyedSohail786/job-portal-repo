@@ -10,7 +10,7 @@ export default function JobList() {
      const [selectedJob, setSelectedJob] = useState([])
      const [selectedLocation, setSelectedLocation] = useState([])
      const [filteredJobs, setFilteredJobs] = useState(jobsData)
-
+     const [loader, setLoader]= useState(false)
 
 
 
@@ -42,6 +42,7 @@ export default function JobList() {
                job => matchesCategory(job) && matchesLocation(job) && matchesTitle(job) && matchesSearchLocation(job)
           )
           setFilteredJobs(newFilteredJobs)
+          setLoader(true)
           setCurrentPage(1)
      }, [jobsData, selectedJob, selectedLocation, searchValue])
 
@@ -119,7 +120,7 @@ export default function JobList() {
                </div>
                {/* Job listing section */}
                {
-                    filteredJobs.length > 0 ?
+                    loader > 0 ?
 
                          <section className='w-full lg:w-3/4 text-gray-800 max-lg:px-4 '>
                               {

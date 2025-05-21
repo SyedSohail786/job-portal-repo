@@ -2,6 +2,7 @@ const { transporter } = require("../../middleware/emailConfig");
 const { jobModel, adminRegisterModel } = require("../../model/AdminRegistrationSchema");
 const { otpModel } = require("../../model/OtpModel");
 const bcrypt = require('bcrypt');
+const { userModel } = require("../../model/userModel");
 const saltRounds = 10;
 
 const insertController = async (req, res) => {
@@ -275,20 +276,27 @@ const getApplicantsData = async (req, res) => {
      try {
           const appliedJobApplicants = [];
 
-          const adminAllJobs = await jobModel.find({ jobPostedAdmin: uemail } && { jobVisible: true });
-
+          const adminAllJobs = await jobModel.find({ jobPostedAdmin: uemail, jobVisible: true });
           adminAllJobs.forEach((job) => {
                if (job.jobApplicants && job.jobApplicants.length > 0) {
-                    appliedJobApplicants.push(job.jobApplicants);
+                    appliedJobApplicants.push(...job.jobApplicants); // flatten here directly
                }
           });
 
-          const filteredApplicants = appliedJobApplicants.flat();
-          console.log(filteredApplicants)
+          const updatedApplicants = await Promise.all(
+               appliedJobApplicants.map(async (applicant) => {
+                    const user = await userModel.findOne({ userEmail: applicant.userEmail });
+                    return {
+                         ...applicant,
+                         resume: user?.resume || "" // add resume if found, else empty
+                    };
+               })
+          );
+          console.log(updatedApplicants)
           res.json({
                status: true,
                msg: "Applicants fetched successfully",
-               applicants: filteredApplicants
+               applicants: updatedApplicants
           });
 
      } catch (error) {
