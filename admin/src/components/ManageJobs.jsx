@@ -10,7 +10,7 @@ import { allContext } from '../context/Context';
 
 export default function ManageJobs() {
      const {getJobData, setJobData} = useContext(allContext)
-
+     const [loader, setLoader]= useState(false)
      const visibilityFunction = (id, currentVisibilty) => {
           const newVisibilty = !currentVisibilty
 
@@ -36,6 +36,7 @@ export default function ManageJobs() {
                     axios.post(`${staticAdminPath}view`, loggedUser)
                          .then((res) => {
                               setJobData(res.data.data);
+                              setLoader(true);
                          });
 
                }).catch((err) => {
@@ -51,7 +52,8 @@ export default function ManageJobs() {
           const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") }
           axios.post(`${staticAdminPath}view`, loggedUser)
                .then((res) => {
-                    setJobData(res.data.data)
+                    setJobData(res.data.data);
+                    setLoader(true);
                })
 
      }, [])
@@ -61,7 +63,7 @@ export default function ManageJobs() {
                <Toaster />
 
                {
-                    getJobData.length > 0 ?
+                    loader?
 
                          <div className='overflow-x-auto mt-4'>
                               <table className='min-w-full text-sm border border-gray-300 shadow-sm rounded-md'>

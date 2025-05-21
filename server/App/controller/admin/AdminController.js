@@ -15,7 +15,7 @@ const insertController = async (req, res) => {
                jobLevel: req.body.level,
                jobSalary: req.body.salary,
                jobPostedAdmin: req.body.adminEmail,
-               adminImage:req.body.adminImage,
+               adminImage: req.body.adminImage,
                adminName: req.body.adminName
           };
 
@@ -42,8 +42,8 @@ const insertController = async (req, res) => {
 
 const viewController = async (req, res) => {
      try {
-          let {loggedEmail} = req.body
-          
+          let { loggedEmail } = req.body
+
           if (typeof loggedEmail === 'string') {
                loggedEmail = loggedEmail.replace(/^["']|["']$/g, '').trim().toLowerCase();
           }
@@ -269,9 +269,36 @@ const getLogo = async (req, res) => {
      }
 }
 
-const getApplicantsData= async(req,res)=>{
+const getApplicantsData = async (req, res) => {
+     const { uemail } = req.body;
 
-}
+     try {
+          const appliedJobApplicants = [];
+
+          const adminAllJobs = await jobModel.find({ jobPostedAdmin: uemail } && { jobVisible: true });
+
+          adminAllJobs.forEach((job) => {
+               if (job.jobApplicants && job.jobApplicants.length > 0) {
+                    appliedJobApplicants.push(job.jobApplicants);
+               }
+          });
+
+          const filteredApplicants = appliedJobApplicants.flat();
+          console.log(filteredApplicants)
+          res.json({
+               status: true,
+               msg: "Applicants fetched successfully",
+               applicants: filteredApplicants
+          });
+
+     } catch (error) {
+          res.json({
+               status: false,
+               msg: error.message
+          });
+     }
+};
+
 
 module.exports = {
      insertController, viewController,

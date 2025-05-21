@@ -32,7 +32,7 @@ export default function ApplyJob() {
     const { userName, userEmail } = clerkUser
     const { jobTitle, jobLocation, _id } = filteredjobs[0];
     const appliedUsersData = {
-      userName, userEmail, jobTitle, jobLocation, _id
+      userName, userEmail, jobTitle, jobLocation, _id,action:2, resume:""
     }
 
     axios.post(`${WEBSITE_API_BASE_URL}/website/saveAppliedJobs`, appliedUsersData)

@@ -92,9 +92,8 @@ const saveResumeController = async (req, res) => {
 }
 
 const saveAppliedJobsController = async (req, res) => {
-     const { userName, userEmail, jobTitle, _id, jobLocation } = req.body;
-     console.log(req.body)
-     const newApplicant = { userName, userEmail, jobTitle, jobLocation, Timestamp: Date.now() }
+     const { userName, userEmail, jobTitle, _id, jobLocation,action, resume } = req.body;
+     const newApplicant = { userName, userEmail, jobTitle, jobLocation,resume,action, Timestamp: Date.now() }
      let foundUser = "";
 
      try {
