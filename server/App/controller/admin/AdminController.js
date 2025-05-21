@@ -325,28 +325,27 @@ const downloadResume = async(req,res)=>{
 
 const updateApplicantAction=async(req,res)=>{
 
+     const { jobId, userEmail, action } = req.body;
+
      try {
-    const { userEmail, jobTitle, action } = req.body;
+          const job = await jobModel.findById(jobId);
+          if (!job) return res.status(404).send({ message: "Job not found" });
 
-    const updated = await jobModel.findOneAndUpdate(
-      { jobTitle, "jobApplicants.userEmail": userEmail },
-      {
-        $set: {
-          "jobApplicants.$.action": action
-        }
-      },
-      { new: true }
-    );
+          const updatedApplicants = job.jobApplicants.map(applicant => {
+               if (applicant.userEmail === userEmail) {
+                    return { ...applicant, action };
+               }
+               return applicant;
+          });
 
-    if (!updated) {
-      return res.status(404).json({ status: false, msg: "Applicant not found" });
-    }
+          job.jobApplicants = updatedApplicants;
+          await job.save();
 
-    return res.json({ status: true, msg: "Action updated successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, msg: "Server error" });
-  }
+          res.send({ message: "Action updated successfully" });
+     } catch (err) {
+          console.error(err);
+          res.status(500).send({ message: "Failed to update action" });
+     }
 }
 
 module.exports = {

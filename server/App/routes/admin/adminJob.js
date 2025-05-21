@@ -6,7 +6,7 @@ const adminJob= express.Router()
 adminJob.post("/insert",insertController)
 adminJob.post("/view", viewController)
 adminJob.post("/getApplicants",getApplicantsData)
-adminJob.get("/download-resume/:filename",downloadResume)
+adminJob.get('/download/:filename', downloadResume);
 adminJob.post("/updateApplicantAction",updateApplicantAction)
 
 
