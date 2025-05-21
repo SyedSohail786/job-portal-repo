@@ -92,38 +92,39 @@ const saveResumeController = async (req, res) => {
 }
 
 const saveAppliedJobsController = async (req, res) => {
-     const { userName, userEmail, jobTitle, _id } = req.body;
-     const newApplicant = { userName, userEmail,jobTitle,Timestamp:Date.now() }
-     let foundUser="";
+     const { userName, userEmail, jobTitle, _id, jobLocation } = req.body;
+     console.log(req.body)
+     const newApplicant = { userName, userEmail, jobTitle, jobLocation, Timestamp: Date.now() }
+     let foundUser = "";
 
      try {
-          const checkApplicant= await jobModel.findOne({_id:_id})
-          const applicantsList= checkApplicant.jobApplicants;
-          applicantsList.map((items,index)=>{
-               if(items.userEmail==userEmail){
-                    foundUser=items.userEmail;
+          const checkApplicant = await jobModel.findOne({ _id: _id })
+          const applicantsList = checkApplicant.jobApplicants;
+          applicantsList.map((items, index) => {
+               if (items.userEmail == userEmail) {
+                    foundUser = items.userEmail;
                }
-               
+
                return null
           })
-          if(foundUser===undefined || foundUser ===""){
+          if (foundUser === undefined || foundUser === "") {
                await jobModel.findByIdAndUpdate(
-               _id,
-               { $push: { jobApplicants: newApplicant } },
-               { new: true } // to return the updated document
-          );
-          res.json({
-               status: true,
-               msg: "User Applied"
-          })
-
-          }else{
+                    _id,
+                    { $push: { jobApplicants: newApplicant } },
+                    { new: true } // to return the updated document
+               );
                res.json({
-               status: false,
-               msg: "User Already Applied"
-          })
+                    status: true,
+                    msg: "User Applied"
+               })
+
+          } else {
+               res.json({
+                    status: false,
+                    msg: "User Already Applied"
+               })
           }
-          
+
      } catch (error) {
           res.json({
                status: false,
@@ -138,4 +139,26 @@ const saveAppliedJobsController = async (req, res) => {
 
 }
 
-module.exports = { viewAllJobsController, updateVisibilty, usersDataController, saveResumeController, saveAppliedJobsController }
+const getResumeController = async (req, res) => {
+     const { userEmail } = req.body
+
+     try {
+          const userFullInfo = await userModel.findOne({ userEmail: userEmail })
+
+          res.json({
+               status: true,
+               resumeName: userFullInfo.resume,
+               msg: "Resume Fetched"
+          })
+     } catch (error) {
+          res.json({
+               status: false,
+               msg: error.message
+          })
+     }
+
+
+
+}
+
+module.exports = { viewAllJobsController, updateVisibilty, usersDataController, saveResumeController, saveAppliedJobsController, getResumeController }

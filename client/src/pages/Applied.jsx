@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import { assets, jobsApplied } from '../assets/assets'
+import { jobsApplied } from '../assets/assets'
 import moment from 'moment'
 import Footer from "../components/Footer"
 import { allContext } from '../context/Context'
@@ -12,7 +12,7 @@ export default function Applied() {
   const [isEdit, setIsEdit] = useState(false)
   const [resume, setResume] = useState(null)
   const { clerkUser, setClerkUser } = useContext(allContext);
-
+  const [gotResume, setGotResume]= useState("")
 
   const resumeSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ export default function Applied() {
 
     //adding all users details in form data
     const resumeData = new FormData();
-    resumeData.append("userResume", resume );
+    resumeData.append("userResume", resume);
     resumeData.append("userName", clerkUser.userName);
     resumeData.append("profilePic", clerkUser.profilePic);
     resumeData.append("userEmail", clerkUser.userEmail);
@@ -34,14 +34,14 @@ export default function Applied() {
       setIsEdit(false);
 
 
-      axios.post(`${WEBSITE_API_BASE_URL}/website/saveResume`,resumeData)
-      .then((res)=>{
-        res.data.status? toast.success("Resume Uploaded Successfully"): toast.error("Internal Server Error")
-      })
+      axios.post(`${WEBSITE_API_BASE_URL}/website/saveResume`, resumeData)
+        .then((res) => {
+          res.data.status ? toast.success("Resume Uploaded Successfully") : toast.error("Internal Server Error")
+        })
 
 
 
-     
+
     } else {
       toast.error("Please Select Resume")
     }
@@ -49,8 +49,12 @@ export default function Applied() {
   };
 
 
-
-
+  useEffect(() => {
+    const userEmail= clerkUser.userEmail
+    axios.post(`${WEBSITE_API_BASE_URL}/website/getResume`,{userEmail})
+    .then((res)=>setGotResume(res.data.resumeName))
+  }, [])
+    
   return (
     <div>
       <Toaster />
@@ -64,23 +68,34 @@ export default function Applied() {
               <>
                 <form onSubmit={resumeSubmit} className='w-full flex gap-2'>
                   <label className='flex items-center max-sm:text-[12px]' htmlFor="resumeUpload">
-                    <p className='bg-blue-100 text-blue-700 px-4 py-2 rounded-lg mr-2'>
+                    {
+                      gotResume? 
+                      <p className='bg-blue-100 text-blue-700 px-4 py-2 rounded-lg mr-2'>
+                            {gotResume}
+                      </p>: <p className='bg-blue-100 text-blue-700 px-4 py-2 rounded-lg mr-2'>
                       {
                         resume ? resume.name : "Select Resume"
                       }
                     </p>
+                    }
+                    
+                    
                     <input type="file" className='text-sm' id='resumeUpload' hidden accept='application/pdf' onChange={e => setResume(e.target.files[0])} />
                     {/* <img src={assets.profile_upload_icon} alt="" /> */}
                   </label>
+
+
                   <button className='border border-green-400 bg-green-100 rounded-lg px-4 py-2 max-sm:text-[12px]' type='submit'>
                     Save
                   </button>
+
+
                 </form>
 
               </>
               :
               <div className='flex gap-2'>
-                <a className='bg-blue-100 text-blue-600 px-3 rounded py-3 text-sm' href="">Resume</a>
+                <a className='bg-blue-100 text-blue-600 px-3 rounded py-3 text-sm'>{gotResume? "Resume Already Submitted": "Submit Resume"}</a>
                 <button className='border border-gray-400 px-3 py-3 rounded font-semibold text-sm' onClick={() => setIsEdit(true)}>Edit</button>
               </div>
           }

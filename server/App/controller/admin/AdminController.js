@@ -269,8 +269,13 @@ const getLogo = async (req, res) => {
      }
 }
 
+const getApplicantsData= async(req,res)=>{
+
+}
+
 module.exports = {
      insertController, viewController,
      AdminRegisterController, emailCheckController,
-     checkOTP, sendOtp, CheckLoginDetails, getLogo
+     checkOTP, sendOtp, CheckLoginDetails, getLogo,
+     getApplicantsData
 };

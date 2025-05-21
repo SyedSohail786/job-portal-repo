@@ -14,11 +14,12 @@ export default function Context({ children }) {
   const [logoUrl, setLogoUrl]=useState("")
   const [userName, setUserName]=useState("")
   const [checkLogin, setLogin]=useState(false)
+   const [getJobData, setJobData] = useState([])
   const obj = {
     setView, view,
     setUserRegisterData, userRegisterData,
     checkLogin,setLogin,setLogoUrl,logoUrl,
-    userName, setUserName,
+    userName, setUserName,setJobData,getJobData,
   }
 
   return (

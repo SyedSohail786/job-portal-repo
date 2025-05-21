@@ -20,18 +20,18 @@ Sentry.setupExpressErrorHandler(app);
 
 //FOR LOCALHOST
 
-// mongoose.connect(process.env.DATABASE_URI + process.env.DATABASE_NAME)
-// .then(() => console.log(`${process.env.DATABASE_NAME} Database Connected!`));
-// app.listen(process.env.PORTNUMBER, ()=>{
-//      console.log(`Server Started on Port ${process.env.PORTNUMBER}`);
-     
-// })
-
-// FOR MONGODB ATLAS
-
-mongoose.connect(process.env.MONGO_ATLAS)
-.then(() => console.log(`MONGODB ATLAS CONNECTED!`));
+mongoose.connect(process.env.DATABASE_URI + process.env.DATABASE_NAME)
+.then(() => console.log(`${process.env.DATABASE_NAME} Database Connected!`));
 app.listen(process.env.PORTNUMBER, ()=>{
      console.log(`Server Started on Port ${process.env.PORTNUMBER}`);
      
 })
+
+// FOR MONGODB ATLAS
+
+// mongoose.connect(process.env.MONGO_ATLAS)
+// .then(() => console.log(`MONGODB ATLAS CONNECTED!`));
+// app.listen(process.env.PORTNUMBER, ()=>{
+//      console.log(`Server Started on Port ${process.env.PORTNUMBER}`);
+     
+// })
