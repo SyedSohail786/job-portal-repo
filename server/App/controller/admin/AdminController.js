@@ -35,7 +35,6 @@ const insertController = async (req, res) => {
           });
 
      } catch (error) {
-          console.error("Error creating job:", error);
           res.status(500).json({
                success: false,
                message: "Failed to create job",
@@ -58,7 +57,6 @@ const viewController = async (req, res) => {
                data: table
           })
      } catch (error) {
-          console.error("Error:", error);
           res.status(500).json({
                success: false,
                message: "Failed",
@@ -85,7 +83,6 @@ const AdminRegisterController = async (req, res) => {
 
           res.status(201).json({ message: "Admin registered successfully", admin: newAdmin });
      } catch (error) {
-          console.error("Error saving admin:", error);
           res.status(500).json({ error: "Internal Server Error" });
      }
 };
@@ -100,7 +97,6 @@ const emailCheckController = async (req, res) => {
                res.send({ status: true, msg: "Enter OTP" })
           }
      } catch (error) {
-          console.error("Error:", error);
           res.status(500).json({
                success: false,
                message: "Failed to check",
@@ -194,7 +190,6 @@ const sendOtp = async (req, res) => {
           res.send({ status: true, msg: "OTP sent" })
           return
      } catch (error) {
-          console.error("Error:", error);
           res.status(500).json({
                status: false,
                message: "Failed to send OTP",
@@ -211,7 +206,7 @@ const checkOTP = async (req, res) => {
      try {
           const uemail = req.body.uemail
           const receivedOTP = req.body.otp
-          console.log(req.body)
+  
           const record = await otpModel.findOne({ email: uemail })
           if (!record) {
                return res.send({ status: 0, msg: "OTP expired or Invalid OTP" })
@@ -244,6 +239,7 @@ const CheckLoginDetails = async (req, res) => {
                const gotDetailsFromDB = await bcrypt.compare(loginPass, upassword)
                if (gotDetailsFromDB) {
                     return res.send({ status: 1, msg: "User verified" })
+               
                } else {
                     return res.send({ status: 0, msg: "Wrong email or password " })
                }
@@ -291,11 +287,11 @@ const getApplicantsData = async (req, res) => {
                     const user = await userModel.findOne({ userEmail: applicant.userEmail });
                     return {
                          ...applicant,
-                         resume: user?.resume || "" // add resume if found, else empty
+                         resume: user?.resume || "" ,// add resume if found, else empty
                     };
                })
           );
-          console.log(updatedApplicants)
+          
           res.json({
                status: true,
                msg: "Applicants fetched successfully",
@@ -323,30 +319,54 @@ const downloadResume = async(req,res)=>{
 
 }
 
-const updateApplicantAction=async(req,res)=>{
+const updateApplicantAction = async (req, res) => {
+  const { jobId, userEmail, action, adminEmail } = req.body;
 
-     const { jobId, userEmail, action } = req.body;
+  try {
+    // Step 1: Find job posted by admin and visible
+    const jobs = await jobModel.find({
+      jobPostedAdmin: adminEmail,
+      jobVisible: true
+    });
 
-     try {
-          const job = await jobModel.findById(jobId);
-          if (!job) return res.status(404).send({ message: "Job not found" });
+    let updated = false;
 
-          const updatedApplicants = job.jobApplicants.map(applicant => {
-               if (applicant.userEmail === userEmail) {
-                    return { ...applicant, action };
-               }
-               return applicant;
-          });
+    // Step 2: Loop through jobs
+    for (let job of jobs) {
+      // Step 3: Loop through jobApplicants
+      for (let i = 0; i < job.jobApplicants.length; i++) {
+        const applicant = job.jobApplicants[i];
 
-          job.jobApplicants = updatedApplicants;
+        // Step 4: Check for matching jobId and userEmail
+        if (applicant.jobId == jobId && applicant.userEmail === userEmail) {
+          // Step 5: Update the applicant object
+          job.jobApplicants[i] = {
+            ...applicant,
+            action: action, // You can add more fields to update if needed
+          };
+
+          // Step 6: Save the job
           await job.save();
+          updated = true;
+          return res.send({
+            message: "Applicant action updated successfully",
+            updatedApplicant: job.jobApplicants[i]
+          });
+        }
+      }
+    }
 
-          res.send({ message: "Action updated successfully" });
-     } catch (err) {
-          console.error(err);
-          res.status(500).send({ message: "Failed to update action" });
-     }
-}
+    // If no applicant matched
+    if (!updated) {
+      return res.status(404).send({ message: "Matching applicant not found" });
+    }
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Failed to update applicant action" });
+  }
+};
+
 
 module.exports = {
      insertController, viewController,

@@ -93,7 +93,12 @@ const saveResumeController = async (req, res) => {
 
 const saveAppliedJobsController = async (req, res) => {
      const { userName, userEmail, jobTitle, _id, jobLocation,action, resume } = req.body;
-     const newApplicant = { userName, userEmail, jobTitle, jobLocation,resume,action, Timestamp: Date.now() }
+     const newApplicant = {
+           userName, userEmail, jobTitle, 
+           jobLocation,resume,action,
+           jobId:Math.floor( Math.random()*99999+Date.now()).toString(), 
+           Timestamp: Date.now() 
+          }
      let foundUser = "";
 
      try {

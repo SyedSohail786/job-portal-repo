@@ -20,17 +20,19 @@ export default function Applicants() {
      }, []);
 
      const handleAction = async (jobId, userEmail, action, index) => {
+          console.log(applicants)
+          console.log(userRegisterData)
           try {
                await axios.post(`${staticAdminPath}updateApplicantAction`, {
                     jobId,
                     userEmail,
-                    action
+                    action,
+                    adminEmail:userRegisterData.uemail
                });
 
                const updated = [...applicants];
                updated[index].action = action;
                setApplicants(updated);
-               
           } catch (err) {
                console.error("Action failed:", err);
           }
