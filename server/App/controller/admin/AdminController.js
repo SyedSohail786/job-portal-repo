@@ -1,11 +1,14 @@
 const { transporter } = require("../../middleware/emailConfig");
 const { jobModel, adminRegisterModel } = require("../../model/AdminRegistrationSchema");
+require("dotenv").config()
 const { otpModel } = require("../../model/OtpModel");
 const bcrypt = require('bcrypt');
 const { userModel } = require("../../model/userModel");
 const saltRounds = 10;
 const path = require("path");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+
 
 
 const insertController = async (req, res) => {
@@ -231,21 +234,34 @@ const checkOTP = async (req, res) => {
 
 const CheckLoginDetails = async (req, res) => {
      try {
-          const { loginPass, loginEmail } = req.body
+          const { loginPass, loginEmail } = req.body;
 
-          const fetchUserLoginDetails = await adminRegisterModel.findOne({ uemail: loginEmail })
-          if (fetchUserLoginDetails) {
-               const { upassword } = fetchUserLoginDetails
-               const gotDetailsFromDB = await bcrypt.compare(loginPass, upassword)
-               if (gotDetailsFromDB) {
-                    return res.send({ status: 1, msg: "User verified" })
-               
-               } else {
-                    return res.send({ status: 0, msg: "Wrong email or password " })
-               }
-          } else {
-               return res.send({ status: 2, msg: "No user found " })
+          const fetchUserLoginDetails = await adminRegisterModel.findOne({ uemail: loginEmail });
+
+          if (!fetchUserLoginDetails) {
+               return res.send({ status: 2, msg: "No user found" });
           }
+
+          const { upassword } = fetchUserLoginDetails;
+          const gotDetailsFromDB = await bcrypt.compare(loginPass, upassword);
+
+          if (!gotDetailsFromDB) {
+               return res.send({ status: 0, msg: "Wrong email or password" });
+          }
+
+          const payload = { email: fetchUserLoginDetails.uemail, id: fetchUserLoginDetails._id };
+          const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1d" });
+
+          return res.send({
+               status: 1,
+               msg: "User verified",
+               token,
+               user: {
+                    name: fetchUserLoginDetails.uname,
+                    email: fetchUserLoginDetails.uemail
+               }
+          });
+
      } catch (error) {
           res.status(500).json({
                status: false,
@@ -253,8 +269,8 @@ const CheckLoginDetails = async (req, res) => {
                error: error.message
           });
      }
-
 };
+
 
 const getLogo = async (req, res) => {
      try {
