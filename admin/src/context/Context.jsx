@@ -22,6 +22,8 @@ export default function Context({ children }) {
     userName, setUserName,setJobData,getJobData,
   }
 
+  
+
   return (
     <allContext.Provider value={obj}>
       {children}

@@ -4,18 +4,31 @@ import { FaDesktop, FaSquarePlus, FaUserPen } from "react-icons/fa6";
 import AddJob from '../components/AddJob';
 import ManageJobs from '../components/ManageJobs';
 import Applicants from '../components/Applicants';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function Dashboard() {
   const [view, setView] = useState("addJob");
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("/api/verify", {
+      //this line has issue
+      axios.get(`api/verify`, {
         headers: { Authorization: `Bearer ${token}` }
-      }).then((res)=>console.log(res.headers));
+      })
+        .then(res => {
+          setUser(res.data.user);
+          setIsLoggedIn(true);
+        })
+        .catch(err => {
+          console.error("Session expired or invalid");
+
+        });
+    } else {
+      navigate("/"); // No token? Force login
     }
   }, []);
 

@@ -13,7 +13,7 @@ export default function Applicants() {
      const token = localStorage.getItem("token");
 
      useEffect(() => {
-          axios.post(`${staticAdminPath}getApplicants`, userRegisterData,{
+          axios.post(`${staticAdminPath}getApplicants`, userRegisterData || JSON.parse(Cookies.get("_sessionfastJob")),{
                     headers: { Authorization: `Bearer ${token}` }
                })
                .then((res) => {
@@ -23,14 +23,15 @@ export default function Applicants() {
      }, []);
 
      const handleAction = async (jobId, userEmail, action, index) => {
-          console.log(applicants)
-          console.log(userRegisterData)
+          const token = localStorage.getItem("token");
           try {
                await axios.post(`${staticAdminPath}updateApplicantAction`, {
                     jobId,
                     userEmail,
                     action,
                     adminEmail:userRegisterData.uemail
+               },{
+                    headers: { Authorization: `Bearer ${token}` }
                });
 
                const updated = [...applicants];
@@ -41,15 +42,7 @@ export default function Applicants() {
           }
      };
 
-     // useEffect(() => {
-     //           const token = localStorage.getItem("token");
-     //           if (token) {
-     //                fetch(`${staticB}api/verify`, {
-     //                     headers: { Authorization: `Bearer ${token}` }
-     //                }).then((res) => console.log(res));
-     //           }
-     //      }, []);
-
+  
      return (
           <div>
                {

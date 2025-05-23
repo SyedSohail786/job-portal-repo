@@ -14,8 +14,12 @@ export default function ManageJobs() {
      const [loader, setLoader] = useState(false)
      const visibilityFunction = (id, currentVisibilty) => {
           const newVisibilty = !currentVisibilty
-
-          axios.put(`${websitestaticPath}updateVisibilty/${id}`, { visible: newVisibilty })
+          const token = localStorage.getItem("token");
+          axios.put(`${websitestaticPath}updateVisibilty/${id}`, { visible: newVisibilty },
+               {
+                    headers: { Authorization: `Bearer ${token}` }
+               }
+          )
                .then(() => {
 
                     newVisibilty ? toast.success("Job Enabled", {
@@ -34,7 +38,11 @@ export default function ManageJobs() {
 
                     // Refresh job data
                     const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") };
-                    axios.post(`${staticAdminPath}view`, loggedUser)
+                    axios.post(`${staticAdminPath}view`, loggedUser,
+                         {
+                    headers: { Authorization: `Bearer ${token}` }
+               }
+                    )
                          .then((res) => {
                               setJobData(res.data.data);
                               setLoader(true);
