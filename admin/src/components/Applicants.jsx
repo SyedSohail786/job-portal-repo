@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { allContext } from "../context/Context";
-
+const staticB = import.meta.env.VITE_STATIC_PATH
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 const staticPath = import.meta.env.VITE_STATIC_PATH;
 
@@ -37,6 +37,15 @@ export default function Applicants() {
                console.error("Action failed:", err);
           }
      };
+
+     useEffect(() => {
+               const token = localStorage.getItem("token");
+               if (token) {
+                    fetch(`${staticB}api/verify`, {
+                         headers: { Authorization: `Bearer ${token}` }
+                    }).then((res) => console.log(res));
+               }
+          }, []);
 
      return (
           <div>

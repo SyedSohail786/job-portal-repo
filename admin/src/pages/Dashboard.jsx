@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { FaDesktop, FaSquarePlus, FaUserPen } from "react-icons/fa6";
 import AddJob from '../components/AddJob';
@@ -9,6 +9,17 @@ import CheckLogin from '../components/CheckLogin';
 
 export default function Dashboard() {
   const [view, setView] = useState("addJob");
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch("/api/verify", {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res)=>console.log(res.headers));
+    }
+  }, []);
+
 
 
 

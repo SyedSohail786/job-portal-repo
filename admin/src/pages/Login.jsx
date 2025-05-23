@@ -78,6 +78,7 @@ export default function Login() {
                .then((res) => {
                     if (res.data.status === 1) {
                          toast.success("Login Successfull")
+                         localStorage.setItem("token", res.data.token);
 
                          setUserRegisterData({ uemail: loginEmail });
                          Cookies.set('_sessionfastJob', JSON.stringify(loginEmail))
@@ -86,10 +87,11 @@ export default function Login() {
                               .then((res) => {
                                    setLogoUrl(res.data.logoName)
                                    setUserName(res.data.userName)
+                                   
                               })
 
 
-
+                         
                          setLogin(true)
                          return setTimeout(() => {
                               navigate("/dashboard")

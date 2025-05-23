@@ -1,13 +1,14 @@
 const express= require("express")
 const { insertController, viewController, getApplicantsData, downloadResume, updateApplicantAction } = require("../../controller/admin/AdminController")
+const auth = require("../../middleware/auth")
 
 const adminJob= express.Router()
 
-adminJob.post("/insert",insertController)
-adminJob.post("/view", viewController)
-adminJob.post("/getApplicants",getApplicantsData)
-adminJob.get('/download/:filename', downloadResume);
-adminJob.post("/updateApplicantAction",updateApplicantAction)
+adminJob.post("/insert",auth,insertController)
+adminJob.post("/view",auth ,viewController)
+adminJob.post("/getApplicants",auth,getApplicantsData)
+adminJob.get('/download/:filename',auth, downloadResume);
+adminJob.post("/updateApplicantAction",auth,updateApplicantAction)
 
 
 
