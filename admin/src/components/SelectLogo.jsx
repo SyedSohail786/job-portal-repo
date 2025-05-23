@@ -34,6 +34,7 @@ const SelectLogo = () => {
         setUserName(res.data.userName)
         Cookies.set('_sessionfastJob', JSON.stringify(userRegisterData.uemail))
       })
+      
       setLogin(true)
       
       navigate("/dashboard")

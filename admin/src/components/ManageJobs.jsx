@@ -50,22 +50,20 @@ export default function ManageJobs() {
 
      //To show the logged admin jobs created data only
      useEffect(() => {
+          const token = localStorage.getItem("token");
           const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") }
-          axios.post(`${staticAdminPath}view`, loggedUser)
+          axios.post(`${staticAdminPath}view`, 
+               loggedUser,
+               {
+                    headers: { Authorization: `Bearer ${token}` }
+               })
                .then((res) => {
                     setJobData(res.data.data);
                     setLoader(true);
                })
      }, [])
 
-     useEffect(() => {
-          const token = localStorage.getItem("token");
-          if (token) {
-               fetch(`${staticB}api/verify`, {
-                    headers: { Authorization: `Bearer ${token}` }
-               }).then((res) => console.log(res));
-          }
-     }, []);
+    
      return (
 
           <div>

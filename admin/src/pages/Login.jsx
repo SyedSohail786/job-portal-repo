@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import axios from 'axios';
 import EnterOTP from "../components/EnterOTP";
@@ -6,8 +6,11 @@ const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 import { allContext } from '../context/Context';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-import CheckLogin from "../components/CheckLogin";
 import Cookies from "js-cookie";
+const staticB = import.meta.env.VITE_STATIC_PATH
+
+
+
 export default function Login() {
      const [passChange, setPassChange] = useState("")
      const [email, setEmail] = useState('')
@@ -29,6 +32,15 @@ export default function Login() {
 
      }
 
+
+     // useEffect(() => {
+     //           const token = localStorage.getItem("token");
+     //           if (token) {
+     //                fetch(`${staticB}api/verify`, {
+     //                     headers: { Authorization: `Bearer ${token}` }
+     //                }).then((res) => console.log(res));
+     //           }
+     //      }, []);
 
      const handleSubmitSignUP = (e) => {
           e.preventDefault();
@@ -71,10 +83,13 @@ export default function Login() {
 
      const handleSubmitLogin = (e) => {
           e.preventDefault()
+          const token = localStorage.getItem("token");
           const loginEmail = e.target.email.value;
           const loginPass = e.target.password.value;
           const loginObj = { loginEmail, loginPass }
-          axios.post(`${staticAdminPath}check-Login-Details`, loginObj)
+          axios.post(`${staticAdminPath}check-Login-Details`, loginObj,{
+                         headers: { Authorization: `Bearer ${token}` }
+                    })
                .then((res) => {
                     if (res.data.status === 1) {
                          toast.success("Login Successfull")
@@ -109,7 +124,6 @@ export default function Login() {
      return (
 
           <>
-               <CheckLogin />
                <Toaster/>
                <div className="flex items-center justify-center min-h-screen w-full bg-white px-4 top-0 left-0">
                     <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-[0px_0px_10px_1px_#ccc] ">

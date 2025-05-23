@@ -4,7 +4,6 @@ import { FaDesktop, FaSquarePlus, FaUserPen } from "react-icons/fa6";
 import AddJob from '../components/AddJob';
 import ManageJobs from '../components/ManageJobs';
 import Applicants from '../components/Applicants';
-import CheckLogin from '../components/CheckLogin';
 
 
 export default function Dashboard() {
@@ -25,7 +24,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <CheckLogin />
       <div className='w-full'>
 
         <Navbar />

@@ -20,6 +20,7 @@ export default function Navbar() {
     }).then((result) => {
       if (result.isConfirmed) {
         Cookies.remove('_sessionfastJob')
+        localStorage.removeItem('token')
         setLogin(false)
         Swal.fire({
           title: "Logged OUt",
