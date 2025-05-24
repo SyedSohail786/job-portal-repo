@@ -64,7 +64,7 @@ export default function Applied() {
     <div>
       <Toaster />
       <Navbar />
-      <div className='max-w-[1320px] mx-auto  mt-5 py-5 px-2 min-h-[65vh] 2xl:px-20  '>
+      <div className='max-w-[1320px] mx-auto  mt-5 py-5 px-2 min-h-[72vh] 2xl:px-20  '>
         <h1 className='text-lg font-semibold '>Your Resume</h1>
         <div className='flex gap-2 mb-6 mt-3 w-full'>
 
