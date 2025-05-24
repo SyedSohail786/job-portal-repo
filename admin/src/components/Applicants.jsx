@@ -68,7 +68,7 @@ export default function Applicants() {
                                                        <td className='px-4 py-2'>{items.jobLocation}</td>
                                                        <td className='px-4 py-2 max-sm:hidden'>
                                                             <div className='flex items-center gap-2 cursor-pointer' onClick={() => {
-                                                                 window.open(`${staticPath}uploads/resume/${items.resume}`, "_blank");
+                                                                 window.open(`${staticPath}/uploads/resume/${items.resume}`, "_blank");
                                                             }}>
                                                                  <span>Download</span>
                                                                  <FaDownload className='text-sm' />
