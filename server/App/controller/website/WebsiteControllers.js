@@ -1,5 +1,5 @@
 const { set } = require("mongoose");
-const { jobModel } = require("../../model/AdminRegistrationSchema");
+const { jobModel, adminRegisterModel } = require("../../model/AdminRegistrationSchema");
 const { userModel } = require("../../model/userModel");
 
 const viewAllJobsController = async (req, res) => {
@@ -92,13 +92,13 @@ const saveResumeController = async (req, res) => {
 }
 
 const saveAppliedJobsController = async (req, res) => {
-     const { userName, userEmail, jobTitle, _id, jobLocation,action, resume } = req.body;
+     const { userName, userEmail, jobTitle, _id, jobLocation, action, resume } = req.body;
      const newApplicant = {
-           userName, userEmail, jobTitle, 
-           jobLocation,resume,action,
-           jobId:Math.floor( Math.random()*99999+Date.now()).toString(), 
-           Timestamp: Date.now() 
-          }
+          userName, userEmail, jobTitle,
+          jobLocation, resume, action,
+          jobId: Math.floor(Math.random() * 99999 + Date.now()).toString(),
+          Timestamp: Date.now()
+     }
      let foundUser = "";
 
      try {
@@ -165,4 +165,90 @@ const getResumeController = async (req, res) => {
 
 }
 
-module.exports = { viewAllJobsController, updateVisibilty, usersDataController, saveResumeController, saveAppliedJobsController, getResumeController }
+const viewCategoryLocationController = async (req, res) => {
+     try {
+          const allLocationData = await jobModel.find({}, 'jobLocation'); // only fetch jobLocation
+          const locationSet = new Set();
+
+          allLocationData.forEach(item => {
+               if (item.jobLocation) {
+                    locationSet.add(item.jobLocation.trim()); // optional: trim spaces
+               }
+          });
+
+          const allLocation = Array.from(locationSet);
+
+          res.json({
+               status: true,
+               msg: allLocation
+          });
+     } catch (error) {
+          res.json({
+               status: false,
+               msg: error.message
+          });
+     }
+};
+
+const viewCategoryController = async (req, res) => {
+     try {
+          const allCategoryData = await jobModel.find({}, 'jobCategory'); // fetch only jobCategory
+          const categorySet = new Set();
+
+          allCategoryData.forEach(item => {
+               if (item.jobCategory) {
+                    categorySet.add(item.jobCategory.trim()); // remove accidental spaces
+               }
+          });
+
+          const allCategory = Array.from(categorySet);
+
+          res.json({
+               status: true,
+               msg: allCategory
+          });
+     } catch (error) {
+          res.json({
+               status: false,
+               msg: error.message
+          });
+     }
+};
+
+const appliedJobsController = async (req, res) => {
+     const { userEmail } = req.body;
+     try {
+          const allJobs = await jobModel.find({
+               "jobApplicants.userEmail": userEmail
+          });
+
+          const filteredJobs = allJobs.map(job => {
+               const applicant = job.jobApplicants.find(app => app.userEmail === userEmail);
+
+               return {
+                    adminImage: job.adminImage,
+                    adminName: job.adminName,
+                    jobTitle: job.jobTitle,
+                    jobLocation: job.jobLocation,
+                    createdAt: job.createdAt,
+                    action: applicant.action
+               };
+          });
+
+          res.status(200).json(filteredJobs);
+     } catch (err) {
+          console.error(err);
+          res.status(500).json({ message: "Server error while fetching applied jobs." });
+     }
+
+
+}
+
+
+module.exports = {
+     viewAllJobsController, updateVisibilty,
+     usersDataController, saveResumeController,
+     saveAppliedJobsController, getResumeController,
+     viewCategoryLocationController, viewCategoryController,
+     appliedJobsController
+}

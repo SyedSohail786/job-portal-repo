@@ -29,8 +29,11 @@ export default function ApplyJob() {
 
 
   const applyJobFunction = () => {
+
+    
     const { userName, userEmail } = clerkUser
-    const { jobTitle, jobLocation, _id } = filteredjobs[0];
+    if(userName!=="" && userEmail !==""){
+      const { jobTitle, jobLocation, _id } = filteredjobs[0];
     const appliedUsersData = {
       userName, userEmail, jobTitle, jobLocation, _id,action:2, resume:""
     }
@@ -46,6 +49,9 @@ export default function ApplyJob() {
         }
 
       })
+    }else{
+      toast.error("Login to Apply")
+    }
 
   }
 

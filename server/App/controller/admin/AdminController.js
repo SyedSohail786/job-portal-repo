@@ -273,7 +273,6 @@ const CheckLoginDetails = async (req, res) => {
      }
 };
 
-
 const getLogo = async (req, res) => {
      const uemail = req.user.email
 
@@ -340,8 +339,8 @@ const downloadResume = async (req, res) => {
 }
 
 const updateApplicantAction = async (req, res) => {
-     const { jobId, userEmail, action, adminEmail } = req.body;
-
+     const { jobId, userEmail, action } = req.body;
+     const adminEmail=req.user.email;
      try {
           // Step 1: Find job posted by admin and visible
           const jobs = await jobModel.find({
@@ -518,6 +517,7 @@ const checkForgotPasswordOtp = async (req, res) => {
 
 
 }
+
 const changePasswordController = async (req, res) => {
 
      const { newPassword, email } = req.body;

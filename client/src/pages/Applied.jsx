@@ -13,7 +13,7 @@ export default function Applied() {
   const [resume, setResume] = useState(null)
   const { clerkUser, setClerkUser } = useContext(allContext);
   const [gotResume, setGotResume]= useState("")
-
+  const [jobsApplied, setJobApplied]=useState([])
   const resumeSubmit = (e) => {
     e.preventDefault();
 
@@ -53,13 +53,18 @@ export default function Applied() {
     const userEmail= clerkUser.userEmail
     axios.post(`${WEBSITE_API_BASE_URL}/website/getResume`,{userEmail})
     .then((res)=>setGotResume(res.data.resumeName))
+
+    axios.post(`${WEBSITE_API_BASE_URL}/website/appliedJobs`,{userEmail})
+    .then((res)=>setJobApplied(res.data))
+
   }, [])
     
   return (
+    <>
     <div>
       <Toaster />
       <Navbar />
-      <div className='max-w-[1320px] mx-auto  mt-5 py-5 px-2 min-h-[65vh] 2xl:px-20 my-10 '>
+      <div className='max-w-[1320px] mx-auto  mt-5 py-5 px-2 min-h-[65vh] 2xl:px-20  '>
         <h1 className='text-lg font-semibold '>Your Resume</h1>
         <div className='flex gap-2 mb-6 mt-3 w-full'>
 
@@ -81,7 +86,6 @@ export default function Applied() {
                     
                     
                     <input type="file" className='text-sm' id='resumeUpload' hidden accept='application/pdf' onChange={e => setResume(e.target.files[0])} />
-                    {/* <img src={assets.profile_upload_icon} alt="" /> */}
                   </label>
 
 
@@ -118,17 +122,17 @@ export default function Applied() {
                 jobsApplied.map((items, index) => true ? (
                   <tr className='px-4 py-3 border-b border-gray-300 text-left' key={index}>
                     <td className='flex items-center py-5 gap-2 text-left px-5 max-sm:px-1 '>
-                      <img src={items.logo} alt="" className='w-6 h-6' />
-                      {items.company}
+                      <img src={items.adminImage} alt="" className='w-6 h-6' />
+                      {items.adminName}
                     </td>
-                    <td className='px-4 py-2' >{items.title} </td>
-                    <td className='px-4 py-2 max-sm:hidden'>{items.location}</td>
+                    <td className='px-4 py-2' >{items.jobTitle} </td>
+                    <td className='px-4 py-2 max-sm:hidden'>{items.jobLocation}</td>
                     <td className='px-4 py-2 max-sm:hidden'>
                       {moment(items.date).format("ll")}
                     </td>
                     <td className='px-4 py-2 max-sm:px-1'>
-                      <span className={` py-2 rounded ${items.status === "Accepted" ? " bg-green-200 text-green-900 px-2" : items.status === "Rejected" ? " bg-red-300 text-red-900 px-2" : "bg-blue-300 text-blue-900 px-3"}`}>
-                        {items.status}
+                      <span className={` py-2 rounded ${items.action === 1 ? " bg-green-200 text-green-900 px-2" : items.action === 0 ? " bg-red-300 text-red-900 px-2" : "bg-blue-300 text-blue-900 px-3"}`}>
+                        {items.action===1? "Accepted": items.action===0?"Rejected": "Pending"}
                       </span>
 
                     </td>
@@ -138,9 +142,11 @@ export default function Applied() {
             </tbody>
           </table>
         </div>
+         
       </div>
-      <Footer />
+    <Footer />
     </div>
-
+     
+</>
   )
 }

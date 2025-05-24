@@ -11,17 +11,21 @@ export default function Footer() {
         <div className='flex gap-3 items-center max-sm:flex-col max-md:flex-col'>
 
           <p className="text-gray-500 text-center"> Developed By Syed Sohail </p>
-        <ul className="flex gap-4 items-center text-sm ">
-          <li>
-            <img src={assets.instagram_icon} alt="Instagram" className="h-8 w-8" />
-          </li>
-          <li>
-            <img src={assets.facebook_icon} alt="Facebook" className="h-8 w-8" />
-          </li>
-          <li>
-            <img src={assets.twitter_icon} alt="Twitter" className="h-8 w-8" />
-          </li>
-        </ul>
+          <ul className="flex gap-4 items-center text-sm ">
+            <li>
+              <a href="https://shorturl.at/lQKhS">
+                <img src={assets.instagram_icon} alt="Instagram" className="h-8 w-8" />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/SyedSohail786">
+                <img src="https://cdn.prod.website-files.com/5f10ed4b2ae6bc09c03f5d7a/64959d5f65a257fb51a4259c_github.png" alt="Github" className="h-8 w-8" />
+              </a>
+            </li>
+            <li>
+              <img src={assets.twitter_icon} alt="Twitter" className="h-8 w-8" />
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

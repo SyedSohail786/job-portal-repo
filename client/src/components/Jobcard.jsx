@@ -15,7 +15,7 @@ export default function Jobcard({ job }) {
                     <span className='inline-flex m-1 items-center gap-2.5 bg-red-50 border border-red-500 px-2 py-1.5 my-2 rounded'>{job.jobLocation}</span>
                     <span className='inline-flex m-1 items-center gap-2.5 border border-blue-500 bg-blue-50 px-2 py-1.5 my-2 rounded'>{job.jobLevel}</span>
                </div>
-               <p dangerouslySetInnerHTML={{ __html: job.jobDescription.slice(0, 250) }} className='text-gray-500 my-3'></p>
+               <p dangerouslySetInnerHTML={{ __html: job.jobDescription.slice(0, 350) }} className='text-gray-500 my-3 line-clamp-6'></p>
                <div className='py-5 flex justify-center gap-3 flex-wrap'>
                     <button
                          onClick={() => navigate(`/apply-jobs/${job._id}`)}
