@@ -11,7 +11,7 @@ const staticPath = import.meta.env.VITE_STATIC_PATH;
 export default function AddJob() {
      const editorRef = useRef(null);
      const quillInstance = useRef(null);
-     const { userRegisterData, view, logoUrl,userName } = useContext(allContext)
+     const { userRegisterData, view, logoUrl, userName } = useContext(allContext)
      const formRef = useRef();
      useEffect(() => {
           if (view === "addJob" && editorRef.current && !quillInstance.current) {
@@ -37,21 +37,21 @@ export default function AddJob() {
           const level = e.target.level.value
           const salary = e.target.salary.value
           const adminEmail = userRegisterData.uemail
-          const adminImage = `${staticPath}/uploads/CompaniesLogo/`+logoUrl
+          const adminImage = `${staticPath}/uploads/CompaniesLogo/` + logoUrl
           const adminName = userName
-          const dataObj = { title, description, category, location, level, salary, adminEmail, adminImage,adminName}
+          const dataObj = { title, description, category, location, level, salary, adminEmail, adminImage, adminName }
           const token = localStorage.getItem("token");
 
 
 
 
-          axios.post(`${staticAdminPath}insert`, dataObj,{
-                    headers: { Authorization: `Bearer ${token}` }
-               })
+          axios.post(`${staticAdminPath}insert`, dataObj, {
+               headers: { Authorization: `Bearer ${token}` }
+          })
                .then((res) => {
                     if (res.data.success) {
                          toast.success("Job Created Successfully")
-                          formRef.current.reset();
+                         formRef.current.reset();
                     }
                }
                )
@@ -61,8 +61,8 @@ export default function AddJob() {
 
      return (
           <div>
-               <Toaster/>
-               <form  onSubmit={sendData} ref={formRef}>
+               <Toaster />
+               <form onSubmit={sendData} ref={formRef}>
                     <div className='space-y-4'>
                          <div>
                               <h1 className='text-lg font-semibold text-[#252525] mb-1'>Job title</h1>

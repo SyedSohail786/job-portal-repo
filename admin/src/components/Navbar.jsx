@@ -28,7 +28,7 @@ export default function Navbar() {
 
 
 
-//logout button logic
+  //logout button logic
   const logoutBtn = () => {
     let timerInterval;
     Swal.fire({
@@ -43,9 +43,9 @@ export default function Navbar() {
       if (result.isConfirmed) {
         Cookies.remove('_sessionfastJob')
         localStorage.removeItem('token')
-        setTimeout(()=>{
+        setTimeout(() => {
           navigate("/")
-        },2000)
+        }, 2000)
         setLogin(false)
         Swal.fire({
           title: "You have been Logged Out!",

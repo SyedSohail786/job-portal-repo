@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react'
 const websitestaticPath = import.meta.env.VITE_WEBSITE_PATH;
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
-const staticB = import.meta.env.VITE_STATIC_PATH
 import Cookies from 'js-cookie';
 import toast, { Toaster } from 'react-hot-toast';
 import { allContext } from '../context/Context';
@@ -40,8 +39,8 @@ export default function ManageJobs() {
                     const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") };
                     axios.post(`${staticAdminPath}view`, loggedUser,
                          {
-                    headers: { Authorization: `Bearer ${token}` }
-               }
+                              headers: { Authorization: `Bearer ${token}` }
+                         }
                     )
                          .then((res) => {
                               setJobData(res.data.data);
@@ -60,7 +59,7 @@ export default function ManageJobs() {
      useEffect(() => {
           const token = localStorage.getItem("token");
           const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") }
-          axios.post(`${staticAdminPath}view`, 
+          axios.post(`${staticAdminPath}view`,
                loggedUser,
                {
                     headers: { Authorization: `Bearer ${token}` }
@@ -71,7 +70,7 @@ export default function ManageJobs() {
                })
      }, [])
 
-    
+
      return (
 
           <div>

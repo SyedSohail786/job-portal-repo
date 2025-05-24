@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { allContext } from "../context/Context";
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 
 const ForgotPassword = () => {
@@ -9,7 +10,8 @@ const ForgotPassword = () => {
      const [otpSent, setOtpSent] = useState(false);
      const [otp, setOtp] = useState("");
      const [confirmPasswords, setConfirmPasswords] = useState("otp")
-     const navigate=useNavigate()
+     const navigate = useNavigate()
+     const { setForgotOn } = useContext(allContext)
      const handleSendOtp = (e) => {
           e.preventDefault();
 
@@ -62,16 +64,16 @@ const ForgotPassword = () => {
                return;
           }
 
-          axios.put(`${staticAdminPath}changePassword`,{email,newPassword})
-          .then((res)=>{
-               if(res.data.status){
-                    navigate("/dashboard")
-                    localStorage.setItem("token", res.data.token);
-                    toast.success("Password Updated Successfully")
-               }else{
-                    toast.error("Something Went Wrong")
-               }
-          })
+          axios.put(`${staticAdminPath}changePassword`, { email, newPassword })
+               .then((res) => {
+                    if (res.data.status) {
+                         navigate("/dashboard")
+                         localStorage.setItem("token", res.data.token);
+                         toast.success("Password Updated Successfully")
+                    } else {
+                         toast.error("Something Went Wrong")
+                    }
+               })
      };
 
      return (
@@ -138,7 +140,7 @@ const ForgotPassword = () => {
                          </form>
 
                          <div className="mt-6 text-center">
-                              <a href="/login" className="text-sm text-blue-600 hover:underline">
+                              <a className="text-sm text-blue-600 hover:underline cursor-pointer" onClick={e => setForgotOn(false)}>
                                    Back to Login
                               </a>
                          </div>
@@ -200,7 +202,7 @@ const ForgotPassword = () => {
                                    </form>
 
                                    <div className="mt-6 text-center">
-                                        <a href="/login" className="text-sm text-blue-600 hover:underline">
+                                        <a className="text-sm text-blue-600 hover:underline" onClick={e => setForgotOn(false)}>
                                              Back to Login
                                         </a>
                                    </div>

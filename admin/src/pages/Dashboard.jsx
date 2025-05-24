@@ -5,7 +5,6 @@ import AddJob from '../components/AddJob';
 import ManageJobs from '../components/ManageJobs';
 import Applicants from '../components/Applicants';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 
 export default function Dashboard() {
@@ -15,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-       navigate("/dashboard");
+      navigate("/dashboard");
     } else {
       navigate("/"); // No token? Force login
     }
