@@ -78,9 +78,7 @@ export default function Login() {
           const loginEmail = e.target.email.value;
           const loginPass = e.target.password.value;
           const loginObj = { loginEmail, loginPass }
-          axios.post(`${staticAdminPath}check-Login-Details`, loginObj, {
-               headers: { Authorization: `Bearer ${token}` }
-          })
+          axios.post(`${staticAdminPath}check-Login-Details`, loginObj)
                .then((res) => {
                     if (res.data.status === 1) {
                          toast.success("Login Successfull")
@@ -89,7 +87,9 @@ export default function Login() {
                          setUserRegisterData({ uemail: loginEmail });
                          Cookies.set('_sessionfastJob', JSON.stringify(loginEmail))
 
-                         axios.post(`${staticAdminPath}getLogo`, { loginEmail })
+                         axios.post(`${staticAdminPath}getLogo`, { loginEmail }, {
+               headers: { Authorization: `Bearer ${token}` }
+          })
                               .then((res) => {
                                    setLogoUrl(res.data.logoName)
                                    setUserName(res.data.userName)
@@ -113,6 +113,11 @@ export default function Login() {
 
      }
 
+     useEffect(()=>{
+          if(localStorage.getItem("token")){
+               navigate("/dashboard")
+          }
+     },[])
 
      return (
 

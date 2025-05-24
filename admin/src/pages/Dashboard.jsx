@@ -15,18 +15,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      //this line has issue
-      axios.get(`api/verify`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(res => {
-          setUser(res.data.user);
-          setIsLoggedIn(true);
-        })
-        .catch(err => {
-          console.error("Session expired or invalid");
-
-        });
+       navigate("/dashboard");
     } else {
       navigate("/"); // No token? Force login
     }
