@@ -40,12 +40,14 @@ export default function AddJob() {
           const adminImage = `${staticPath}/uploads/CompaniesLogo/`+logoUrl
           const adminName = userName
           const dataObj = { title, description, category, location, level, salary, adminEmail, adminImage,adminName}
-          
+          const token = localStorage.getItem("token");
 
 
 
 
-          axios.post(`${staticAdminPath}insert`, dataObj)
+          axios.post(`${staticAdminPath}insert`, dataObj,{
+                    headers: { Authorization: `Bearer ${token}` }
+               })
                .then((res) => {
                     if (res.data.success) {
                          toast.success("Job Created Successfully")

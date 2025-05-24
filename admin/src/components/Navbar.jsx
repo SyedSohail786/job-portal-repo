@@ -1,13 +1,34 @@
-import { useContext,useState } from "react";
+import { useContext,useEffect,useState } from "react";
 import { allContext } from "../context/Context";
 import Swal from 'sweetalert2'
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 
 
 
 export default function Navbar() {
   const [logout, setLogout] = useState(true)
-  const { setLogin,logoUrl,userName } = useContext(allContext)
+  const navigate=useNavigate()
+  const { setLogin,logoUrl,setLogoUrl,userName,setUserName } = useContext(allContext)
+
+useEffect(()=>{
+    const token = localStorage.getItem("token");
+    axios.post(`${staticAdminPath}getLogo`,{ },
+        {
+            headers: { Authorization: `Bearer ${token}` }
+        }).then((res)=>{
+          setLogoUrl(res.data.logoName)
+          setUserName(res.data.userName)
+        })
+
+  },[])
+
+
+
+
+
   const logoutBtn = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -21,6 +42,7 @@ export default function Navbar() {
       if (result.isConfirmed) {
         Cookies.remove('_sessionfastJob')
         localStorage.removeItem('token')
+        navigate("/")
         setLogin(false)
         Swal.fire({
           title: "Logged OUt",

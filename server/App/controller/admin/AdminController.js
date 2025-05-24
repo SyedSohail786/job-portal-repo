@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 
 
 const insertController = async (req, res) => {
+     
      try {
           // Map incoming data to schema fields
           const jobData = {
@@ -21,7 +22,7 @@ const insertController = async (req, res) => {
                jobLocation: req.body.location,
                jobLevel: req.body.level,
                jobSalary: req.body.salary,
-               jobPostedAdmin: req.body.adminEmail,
+               jobPostedAdmin: req.user.email,
                adminImage: req.body.adminImage,
                adminName: req.body.adminName
           };
@@ -47,8 +48,9 @@ const insertController = async (req, res) => {
 };
 
 const viewController = async (req, res) => {
+     
      try {
-          let { loggedEmail } = req.body
+          let loggedEmail  = req.user.email
 
           if (typeof loggedEmail === 'string') {
                loggedEmail = loggedEmail.replace(/^["']|["']$/g, '').trim().toLowerCase();
@@ -273,8 +275,10 @@ const CheckLoginDetails = async (req, res) => {
 
 
 const getLogo = async (req, res) => {
+     const uemail=req.user.email
+
      try {
-          const filteredEmail = await adminRegisterModel.findOne({ uemail: req.body.loginEmail })
+          const filteredEmail = await adminRegisterModel.findOne({ uemail})
           return res.send({ status: 1, logoName: filteredEmail.filename, userName: filteredEmail.uname, msg: "got logo" })
      } catch (error) {
           res.status(500).json({
@@ -286,7 +290,7 @@ const getLogo = async (req, res) => {
 }
 
 const getApplicantsData = async (req, res) => {
-     const { uemail } = req.body;
+     const  uemail  = req.user.email
 
      try {
           const appliedJobApplicants = [];

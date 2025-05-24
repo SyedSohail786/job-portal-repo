@@ -1,6 +1,7 @@
 const express=require("express");
 const { uploads } = require("../../middleware/fileUpload");
 const { AdminRegisterController, checkOTP, sendOtp, emailCheckController, CheckLoginDetails, getLogo } = require("../../controller/admin/AdminController");
+const auth = require("../../middleware/auth");
 const adminRegister= express.Router()
 
 
@@ -9,7 +10,7 @@ adminRegister.post("/admin-register",uploads("uploads/CompaniesLogo").single("lo
 adminRegister.post ("/checkOTP", checkOTP)
 adminRegister.post("/sendOtp", sendOtp)
 adminRegister.post("/check-Login-Details",CheckLoginDetails)
-adminRegister.post("/getLogo", getLogo)
+adminRegister.post("/getLogo",auth, getLogo)
 
 
 

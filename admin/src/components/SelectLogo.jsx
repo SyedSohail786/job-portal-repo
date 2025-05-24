@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { allContext } from '../context/Context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,13 @@ const SelectLogo = () => {
 
     try {
       const res = await axios.post(`${staticAdminPath}admin-register`, formData);
-      axios.post(`${staticAdminPath}getLogo`, { loginEmail: userRegisterData.uemail }).then((res) => {
+      axios.post(`${staticAdminPath}getLogo`, 
+          { 
+            loginEmail: userRegisterData.uemail 
+          },
+        {
+            headers: { Authorization: `Bearer ${token}` }
+        }).then((res) => {
         setLogoUrl(res.data.logoName)
         setUserName(res.data.userName)
         Cookies.set('_sessionfastJob', JSON.stringify(userRegisterData.uemail))
@@ -44,6 +50,7 @@ const SelectLogo = () => {
     }
   };
 
+  
 
   return (
     <div className="flex items-center justify-center px-4">
