@@ -7,7 +7,8 @@ import { allContext } from '../context/Context';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-const staticB = import.meta.env.VITE_STATIC_PATH
+import ForgotPassword from "../components/ForgotPassword";
+const staticAdmin = import.meta.env.VITE_ADMIN_PATH
 
 
 
@@ -31,16 +32,6 @@ export default function Login() {
           setName("")
 
      }
-
-
-     // useEffect(() => {
-     //           const token = localStorage.getItem("token");
-     //           if (token) {
-     //                fetch(`${staticB}api/verify`, {
-     //                     headers: { Authorization: `Bearer ${token}` }
-     //                }).then((res) => console.log(res));
-     //           }
-     //      }, []);
 
      const handleSubmitSignUP = (e) => {
           e.preventDefault();
@@ -87,9 +78,9 @@ export default function Login() {
           const loginEmail = e.target.email.value;
           const loginPass = e.target.password.value;
           const loginObj = { loginEmail, loginPass }
-          axios.post(`${staticAdminPath}check-Login-Details`, loginObj,{
-                         headers: { Authorization: `Bearer ${token}` }
-                    })
+          axios.post(`${staticAdminPath}check-Login-Details`, loginObj, {
+               headers: { Authorization: `Bearer ${token}` }
+          })
                .then((res) => {
                     if (res.data.status === 1) {
                          toast.success("Login Successfull")
@@ -102,11 +93,11 @@ export default function Login() {
                               .then((res) => {
                                    setLogoUrl(res.data.logoName)
                                    setUserName(res.data.userName)
-                                   
+
                               })
 
 
-                         
+
                          setLogin(true)
                          return setTimeout(() => {
                               navigate("/dashboard")
@@ -121,13 +112,19 @@ export default function Login() {
                })
 
      }
+
+
      return (
 
           <>
-               <Toaster/>
+               <Toaster />
                <div className="flex items-center justify-center min-h-screen w-full bg-white px-4 top-0 left-0">
                     <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-[0px_0px_10px_1px_#ccc] ">
                          {/* recruiter login */}
+
+                         {/* <ForgotPassword/> */}
+
+
                          <div className={`${loginTrue ? "" : "hidden"}`}>
                               <h2 className="text-3xl font-semibold text-center mb-1">Recruiter Login</h2>
                               <p className='text-[13px] text-gray-500 text-center mb-3'>Welcome back! Please sign in to continue</p>
@@ -165,7 +162,7 @@ export default function Login() {
                                              }
 
                                         </div>
-                                        <a href='' className='text-[14px] mt-4 text-left text-blue-600 '>Forgot Password?</a>
+                                        <a className='text-[14px] mt-4 text-left text-blue-600 '>Forgot Password?</a>
 
                                    </div>
                                    <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-[40px] hover:bg-blue-700 transition">
@@ -176,6 +173,11 @@ export default function Login() {
                                    Don’t have an account? <span href="/" onClick={onClicks} className="text-blue-600 cursor-pointer ">SignUp</span>
                               </p>
                          </div>
+
+
+
+
+
                          {/* recruiter register */}
 
                          {

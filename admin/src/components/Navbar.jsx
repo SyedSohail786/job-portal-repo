@@ -1,4 +1,4 @@
-import { useContext,useEffect,useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { allContext } from "../context/Context";
 import Swal from 'sweetalert2'
 import Cookies from "js-cookie";
@@ -10,26 +10,27 @@ const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 
 export default function Navbar() {
   const [logout, setLogout] = useState(true)
-  const navigate=useNavigate()
-  const { setLogin,logoUrl,setLogoUrl,userName,setUserName } = useContext(allContext)
+  const navigate = useNavigate()
+  const { setLogin, logoUrl, setLogoUrl, userName, setUserName } = useContext(allContext)
 
-useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.post(`${staticAdminPath}getLogo`,{ },
-        {
-            headers: { Authorization: `Bearer ${token}` }
-        }).then((res)=>{
-          setLogoUrl(res.data.logoName)
-          setUserName(res.data.userName)
-        })
+    axios.post(`${staticAdminPath}getLogo`, {},
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res) => {
+        setLogoUrl(res.data.logoName)
+        setUserName(res.data.userName)
+      })
 
-  },[])
-
-
+  }, [])
 
 
 
+
+//logout button logic
   const logoutBtn = () => {
+    let timerInterval;
     Swal.fire({
       title: "Are you sure?",
       text: "You want to logout?",
@@ -42,12 +43,30 @@ useEffect(()=>{
       if (result.isConfirmed) {
         Cookies.remove('_sessionfastJob')
         localStorage.removeItem('token')
-        navigate("/")
+        setTimeout(()=>{
+          navigate("/")
+        },2000)
         setLogin(false)
         Swal.fire({
-          title: "Logged OUt",
-          text: "You have been Logged out",
-          icon: "success"
+          title: "You have been Logged Out!",
+          html: "redriecting you to Login Page",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+              timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+          }
         });
       }
     });
@@ -60,7 +79,7 @@ useEffect(()=>{
         </div>
         <div className="flex justify-center items-center gap-3 relative">
           <p className="font-semibold text-sm sm:text-base capitalize">Hi, {userName}</p>
-            <img src={`http://localhost:8000/uploads/CompaniesLogo/${logoUrl}`} className="h-10 w-10 rounded-[50px] border border-gray-400" alt="companyLogo" onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)}/>
+          <img src={`http://localhost:8000/uploads/CompaniesLogo/${logoUrl}`} className="h-10 w-10 rounded-[50px] border border-gray-400" alt="companyLogo" onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} />
           <div className={`absolute top-10 right-2 border bg-white cursor-pointer border-gray-200 hover:bg-blue-100  rounded ${logout ? "hidden" : ""}`} onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} onClick={logoutBtn}
           >
             <p className="  px-4 py-2">Logout</p>
