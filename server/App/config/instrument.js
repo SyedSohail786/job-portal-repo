@@ -1,9 +1,10 @@
 // Import with `import * as Sentry from "@sentry/node"` if you are using ESM
 const Sentry = require("@sentry/node");
+require("dotenv").config()
 const { nodeProfilingIntegration } = require("@sentry/profiling-node");
 
 Sentry.init({
-  dsn: "https://784590dd4115298a77ff8e80b0c563e1@o4509332440678400.ingest.us.sentry.io/4509332445986816",
+  dsn: process.env.SENTRY_DSN,
   integrations: [
      Sentry.mongooseIntegration(),
      nodeProfilingIntegration(),

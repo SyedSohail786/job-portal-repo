@@ -1,25 +1,25 @@
-const express=require("express");
+const express = require("express");
 const { uploads } = require("../../middleware/fileUpload");
-const { 
-     AdminRegisterController, checkOTP, 
-     sendOtp, emailCheckController, 
-     CheckLoginDetails, getLogo, 
-     changePasswordController, 
+const {
+     AdminRegisterController, checkOTP,
+     sendOtp, emailCheckController,
+     CheckLoginDetails, getLogo,
+     changePasswordController,
      sendOtpChangePassword,
-     checkForgotPasswordOtp} = require("../../controller/admin/AdminController");
+     checkForgotPasswordOtp } = require("../../controller/admin/AdminController");
 const auth = require("../../middleware/auth");
-const adminRegister= express.Router()
+const adminRegister = express.Router()
 
 
-adminRegister.post("/email-check",emailCheckController)
-adminRegister.post("/admin-register",uploads("uploads/CompaniesLogo").single("logo"),AdminRegisterController )
-adminRegister.post ("/checkOTP", checkOTP)
+adminRegister.post("/email-check", emailCheckController)
+adminRegister.post("/admin-register", uploads("uploads/CompaniesLogo").single("logo"), AdminRegisterController)
+adminRegister.post("/checkOTP", checkOTP)
 adminRegister.post("/sendOtp", sendOtp)
-adminRegister.post("/check-Login-Details",CheckLoginDetails)
-adminRegister.post("/getLogo",auth, getLogo)
-adminRegister.put("/changePassword",changePasswordController)
-adminRegister.post("/sendOtpChangePassword",sendOtpChangePassword)
-adminRegister.post("/checkForgotPasswordOtp",checkForgotPasswordOtp)
+adminRegister.post("/check-Login-Details", CheckLoginDetails)
+adminRegister.post("/getLogo", auth, getLogo)
+adminRegister.put("/changePassword", changePasswordController)
+adminRegister.post("/sendOtpChangePassword", sendOtpChangePassword)
+adminRegister.post("/checkForgotPasswordOtp", checkForgotPasswordOtp)
 
 
 
@@ -30,4 +30,4 @@ adminRegister.post("/checkForgotPasswordOtp",checkForgotPasswordOtp)
 
 
 
-module.exports={adminRegister}
+module.exports = { adminRegister }

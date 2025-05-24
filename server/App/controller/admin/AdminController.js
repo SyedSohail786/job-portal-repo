@@ -340,7 +340,7 @@ const downloadResume = async (req, res) => {
 
 const updateApplicantAction = async (req, res) => {
      const { jobId, userEmail, action } = req.body;
-     const adminEmail=req.user.email;
+     const adminEmail = req.user.email;
      try {
           // Step 1: Find job posted by admin and visible
           const jobs = await jobModel.find({
@@ -522,16 +522,16 @@ const changePasswordController = async (req, res) => {
 
      const { newPassword, email } = req.body;
      const hashPass = await bcrypt.hash(newPassword, saltRounds)
-     
+
      try {
           const adminRes = await adminRegisterModel.findOneAndUpdate({ uemail: email }, {
-          $set: {
-               upassword: hashPass
-          }
-     }, { new: true })
-     const payload = { email: email, id: adminRes._id };
-     const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1d" });
-     res.send({
+               $set: {
+                    upassword: hashPass
+               }
+          }, { new: true })
+          const payload = { email: email, id: adminRes._id };
+          const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1d" });
+          res.send({
                status: true,
                msg: "Success",
                token
@@ -543,7 +543,7 @@ const changePasswordController = async (req, res) => {
                msg: error.message
           })
      }
-     
+
 
 }
 

@@ -57,11 +57,11 @@ const addJob = new mongoose.Schema({
           type: Boolean,
           default: true
      },
-     adminImage:{
-          type:String
+     adminImage: {
+          type: String
      },
-     adminName:{
-          type:String
+     adminName: {
+          type: String
      }
 
 }, {

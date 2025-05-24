@@ -1,8 +1,8 @@
-const express= require("express")
+const express = require("express")
 const { adminJob } = require("./admin/adminJob")
 const { adminRegister } = require("./admin/adminRegistrationRoute")
 
-const AdminRoute= express.Router()
+const AdminRoute = express.Router()
 
 AdminRoute.use(adminJob)
 AdminRoute.use(adminRegister)
@@ -10,4 +10,4 @@ AdminRoute.use(adminRegister)
 
 
 
-module.exports={AdminRoute}
+module.exports = { AdminRoute }
