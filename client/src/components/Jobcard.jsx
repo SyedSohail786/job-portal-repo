@@ -4,7 +4,6 @@ import { motion } from 'motion/react'
 export default function Jobcard({ job }) {
      const navigate = useNavigate()
 
-
      return (
           <motion.div className='border border-gray-400 pt-5 px-5 mb-5 rounded-[15px] shadow-lg ' whileHover={{ scale:0.97 }}>
                <div>
