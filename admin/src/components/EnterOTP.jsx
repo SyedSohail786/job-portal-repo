@@ -8,7 +8,7 @@ export default function EnterOTP({ email }) {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [showLogoPicker, setLogoPicker] = useState(false)
   const { uemail } = email
-
+  const [isVerifying, setIsVerifying]= useState(false)
   const handleChange = (e, index) => {
     const value = e.target.value;
     if (/^[0-9]?$/.test(value)) {
@@ -26,6 +26,7 @@ export default function EnterOTP({ email }) {
   // OTP CHECKING HERE 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsVerifying(true)
     const finalOtp = otp.join("");
     const otpObj = {
       otp: finalOtp,
@@ -35,6 +36,7 @@ export default function EnterOTP({ email }) {
     axios.post(`${staticAdminPath}checkOTP`, otpObj)
       .then((res) => {
         if (res.data.status === 1) {
+           setIsVerifying(false)
           toast.success("Registration Successfull")
           setLogoPicker(true)
           return;
@@ -72,12 +74,21 @@ export default function EnterOTP({ email }) {
                 />
               ))}
             </div>
+              {
+                isVerifying?
+                <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-200"
+            >
+              Verifying
+            </button>:
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-200"
             >
               Verify OTP
             </button>
+              }
           </form>
           <p className="text-center text-sm text-gray-500 mt-4">
             Didn’t receive OTP? <button className="text-blue-600 hover:underline">Resend</button>

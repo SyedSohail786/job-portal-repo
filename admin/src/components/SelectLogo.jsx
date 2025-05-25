@@ -97,6 +97,8 @@ const SelectLogo = () => {
           </p>
 
           {selectedFile && (
+
+            
             <button
               className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition"
             >

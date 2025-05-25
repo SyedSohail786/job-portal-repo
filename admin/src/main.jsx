@@ -24,7 +24,7 @@ const router = createBrowserRouter([
 
   }, {
     path: "*",
-    element: <WrongRoute/>
+    element: <WrongRoute />
 
   },
 ])
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
 
-  // <StrictMode>
+  <StrictMode>
     <Context>
       <RouterProvider router={router} />
       <ToastContainer
@@ -48,5 +48,5 @@ createRoot(document.getElementById('root')).render(
         theme="colored"
         transition={Flip} />
     </Context>
-  // </StrictMode>,
+  </StrictMode>,
 )

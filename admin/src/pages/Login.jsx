@@ -73,7 +73,6 @@ export default function Login() {
 
      const handleSubmitLogin = (e) => {
           e.preventDefault()
-          const token = localStorage.getItem("token");
           const loginEmail = e.target.email.value;
           const loginPass = e.target.password.value;
           const loginObj = { loginEmail, loginPass }
