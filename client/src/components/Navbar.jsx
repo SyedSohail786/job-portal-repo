@@ -42,12 +42,14 @@ export default function Navbar() {
         .then((res) => res.data)
         .catch((err) => err);
         Cookies.set("_Session-logged",true)
+        localStorage.setItem("_sessionEmail",clerkUser.userEmail)
 
 
     }
 
     }else{
       Cookies.remove("_Session-logged")
+      Cookies.remove("_SessionUser")
     }
     
   }, [clerkUser]);
