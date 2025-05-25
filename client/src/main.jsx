@@ -10,7 +10,7 @@ import {
 import Context from './context/Context.jsx'
 import Applied from './pages/Applied.jsx'
 import ApplyJob from './pages/ApplyJob.jsx'
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE
 
 if (!PUBLISHABLE_KEY) {
   throw new Error('Add your Clerk Publishable Key to the .env file')
