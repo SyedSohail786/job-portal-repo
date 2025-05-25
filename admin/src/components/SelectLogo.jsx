@@ -29,13 +29,9 @@ const SelectLogo = () => {
 
     try {
       const res = await axios.post(`${staticAdminPath}admin-register`, formData)
-<<<<<<< HEAD
       
         localStorage.setItem("token",res.data.token)
         const token = localStorage.getItem("token")
-=======
-      .then((res)=>{
->>>>>>> 0a02905a375b3dd852adcd63bdc3f21ee81a2a09
         axios.post(`${staticAdminPath}getLogo`,
         {
           loginEmail: userRegisterData.uemail
@@ -51,11 +47,7 @@ const SelectLogo = () => {
       setLogin(true)
 
       navigate("/dashboard")
-<<<<<<< HEAD
       
-=======
-      })
->>>>>>> 0a02905a375b3dd852adcd63bdc3f21ee81a2a09
       
 
     } catch (err) {
