@@ -59,6 +59,7 @@ export default function ManageJobs() {
           axios.delete(`${staticAdminPath}deleteJob/${_id}`)
           .then((res)=>{
                if(res.data.status){
+                    Refresh()
                     toast.success("Job Deleted Succesfully")
                }else{
                     toast.error("Something Went Wrong")
@@ -80,6 +81,19 @@ export default function ManageJobs() {
                })
      }, [])
 
+     const Refresh=()=>{
+          const token = localStorage.getItem("token");
+          const loggedUser = { loggedEmail: Cookies.get("_sessionfastJob") }
+          axios.post(`${staticAdminPath}view`,
+               loggedUser,
+               {
+                    headers: { Authorization: `Bearer ${token}` }
+               })
+               .then((res) => {
+                    setJobData(res.data.data);
+                    setLoader(true);
+               })
+     }
 
      return (
 
