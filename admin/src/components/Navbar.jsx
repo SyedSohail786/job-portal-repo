@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
-
+const staticPath= import.meta.env.VITE_STATIC_PATH
 
 
 export default function Navbar() {
@@ -79,7 +79,7 @@ export default function Navbar() {
         </div>
         <div className="flex justify-center items-center gap-3 relative">
           <p className="font-semibold text-sm sm:text-base capitalize">Hi, {userName}</p>
-          <img src={`http://localhost:8000/uploads/CompaniesLogo/${logoUrl}`} className="h-10 w-10 rounded-[50px] border border-gray-400" alt="companyLogo" onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} />
+          <img src={`${staticPath}/uploads/CompaniesLogo/${logoUrl}`} className="h-10 w-10 rounded-[50px] border border-gray-400" alt="companyLogo" onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} />
           <div className={`absolute top-10 right-2 border bg-white cursor-pointer border-gray-200 hover:bg-blue-100  rounded ${logout ? "hidden" : ""}`} onMouseOver={() => setLogout(false)} onMouseLeave={() => setLogout(true)} onClick={logoutBtn}
           >
             <p className="  px-4 py-2">Logout</p>
