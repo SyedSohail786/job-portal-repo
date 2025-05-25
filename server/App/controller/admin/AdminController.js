@@ -496,7 +496,7 @@ const sendOtpChangePassword = async (req, res) => {
 const checkForgotPasswordOtp = async (req, res) => {
 
      const { email, otp } = req.body;
-     console.log(req.body)
+    
      try {
           const adminData = await otpModel.findOne({ email })
           if (adminData.otp == otp) {

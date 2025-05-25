@@ -3,6 +3,7 @@ import { allContext } from '../context/Context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import toast, { Toaster } from 'react-hot-toast';
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 
 
@@ -51,6 +52,7 @@ const SelectLogo = () => {
       
 
     } catch (err) {
+      toast.error("Something Went Wrong")
       console.error('❌ Error:', err);
     }
   };
@@ -59,6 +61,7 @@ const SelectLogo = () => {
 
   return (
     <div className="flex items-center justify-center px-4">
+      <Toaster/>
       <div className="bg-white w-full max-w-md text-center">
         <form action="" onSubmit={formDataFunction}>
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Select Your Company Logo</h2>

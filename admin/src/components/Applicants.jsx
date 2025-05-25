@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { allContext } from "../context/Context";
+import toast, { Toaster } from "react-hot-toast";
 const staticAdminPath = import.meta.env.VITE_ADMIN_PATH;
 const staticPath = import.meta.env.VITE_STATIC_PATH;
 
@@ -37,6 +38,7 @@ export default function Applicants() {
                updated[index].action = action;
                setApplicants(updated);
           } catch (err) {
+               toast.error("Something Went Wrong")
                console.error("Action failed:", err);
           }
      };
@@ -44,8 +46,10 @@ export default function Applicants() {
 
      return (
           <div>
+               <Toaster/>
                {
                     loader ? (
+                         
                          <div className='overflow-x-auto mt-4'>
                               <table className='min-w-full text-sm border border-gray-300 shadow-sm rounded-md'>
                                    <thead className='bg-gray-50'>

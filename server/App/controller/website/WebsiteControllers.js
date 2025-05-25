@@ -37,7 +37,6 @@ const usersDataController = async (req, res) => {
      const { userName, userEmail, profilePic, userResume, _id } = req.body
 
      try {
-          // console.log(userResume)
           const saveUser = new userModel(
                {
                     userName,
