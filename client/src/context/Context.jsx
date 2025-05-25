@@ -18,6 +18,7 @@ export default function Context({ children }) {
   })
   const [jobsData, setJobsData] = useState([])
   const [jobInfo, setJobInfo] = useState([])
+  const [gotResume,setGotResume]=useState("")
 
   //FETCHING JOBS DATA FROM API
 
@@ -39,7 +40,8 @@ export default function Context({ children }) {
     setIsSearched, setSearchValue,
     isSearched, searchValue, jobInfo,
     setJobInfo, setClerkUser, clerkUser,
-    setJobsData, jobsData, fetchJobs 
+    setJobsData, jobsData, fetchJobs,
+    setGotResume,gotResume
   }
 
 

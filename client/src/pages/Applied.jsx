@@ -11,13 +11,12 @@ const WEBSITE_API_BASE_URL = import.meta.env.VITE_WEBSITE_API_BASE_URL
 export default function Applied() {
   const [isEdit, setIsEdit] = useState(false)
   const [resume, setResume] = useState(null)
-  const { clerkUser, setClerkUser } = useContext(allContext);
-  const [gotResume, setGotResume] = useState("")
+  const { clerkUser, setClerkUser,setGotResume ,gotResume} = useContext(allContext);
   const [jobsApplied, setJobApplied] = useState([])
+
+
   const resumeSubmit = (e) => {
     e.preventDefault();
-
-
     //adding all users details in form data
     const resumeData = new FormData();
     resumeData.append("userResume", resume);
