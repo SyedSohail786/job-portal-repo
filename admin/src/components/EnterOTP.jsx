@@ -43,6 +43,7 @@ export default function EnterOTP({ email }) {
         }
 
         if (res.data.status === 2) {
+          setIsVerifying(false)
           toast.error("Incorrect OTP")
         } else {
           toast.warning("OTP not found")

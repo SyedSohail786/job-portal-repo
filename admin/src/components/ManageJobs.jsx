@@ -55,6 +55,16 @@ export default function ManageJobs() {
 
      };
 
+     const DeleteJob=(_id)=>{
+          axios.delete(`${staticAdminPath}deleteJob/${_id}`)
+          .then((res)=>{
+               if(res.data.status){
+                    toast.success("Job Deleted Succesfully")
+               }else{
+                    toast.error("Something Went Wrong")
+               }
+          })
+     }
      //To show the logged admin jobs created data only
      useEffect(() => {
           const token = localStorage.getItem("token");
@@ -88,7 +98,8 @@ export default function ManageJobs() {
                                              <th className='px-4 py-2 text-left'>Date</th>
                                              <th className='px-4 py-2 text-left'>Location</th>
                                              <th className='px-4 py-2 text-left  max-sm:hidden'>Applicants</th>
-                                             <th className='px-4 py-2 text-left  max-sm:hidden'>Visible</th>
+                                             <th className='px-4 py-2 text-left  max-sm:hidden'>Visibility</th>
+                                             <th className='px-4 py-2 text-left  max-sm:hidden'>Action</th>
                                         </tr>
                                    </thead>
                                    <tbody>
@@ -98,7 +109,7 @@ export default function ManageJobs() {
                                              getJobData.length >= 1 ?
 
                                                   getJobData.map((items, index) => {
-
+                                                      
                                                        return (
                                                             <tr key={index}>
                                                                  <td className='px-4 py-2'>{index + 1}</td>
@@ -117,6 +128,7 @@ export default function ManageJobs() {
                                                                            <button className='py-2 px-3 bg-green-600 text-white rounded-lg hover:outline-green-800 hover:outline-2' onClick={() => visibilityFunction(items._id, items.jobVisible)}>Click to Enable</button>
                                                                       )}
                                                                  </td>
+                                                                 <td className='px-4 py-2 font-bold text-rose-700 cursor-pointer max-sm:hidden' onClick={()=>DeleteJob(items._id)}>Delete</td>
                                                             </tr>
                                                        )
                                                   })

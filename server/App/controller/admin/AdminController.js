@@ -548,6 +548,26 @@ const changePasswordController = async (req, res) => {
 
 }
 
+const DeleteJob = async (req, res) => {
+     const id = req.params.id
+     try {
+
+          const data = await jobModel.deleteOne({ _id: id })
+          res.send({
+               status: true,
+               msg: data
+              
+          })
+     } catch (error) {
+          res.send({
+               status: false,
+               msg: error.message
+              
+          })
+     }
+
+
+}
 
 module.exports = {
      insertController, viewController,
@@ -555,5 +575,5 @@ module.exports = {
      checkOTP, sendOtp, CheckLoginDetails, getLogo,
      getApplicantsData, downloadResume, updateApplicantAction,
      changePasswordController, sendOtpChangePassword,
-     checkForgotPasswordOtp,
+     checkForgotPasswordOtp, DeleteJob
 };

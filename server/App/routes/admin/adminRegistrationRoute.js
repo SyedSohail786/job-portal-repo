@@ -6,7 +6,8 @@ const {
      CheckLoginDetails, getLogo,
      changePasswordController,
      sendOtpChangePassword,
-     checkForgotPasswordOtp } = require("../../controller/admin/AdminController");
+     checkForgotPasswordOtp, 
+     DeleteJob} = require("../../controller/admin/AdminController");
 const auth = require("../../middleware/auth");
 const adminRegister = express.Router()
 
@@ -20,7 +21,7 @@ adminRegister.post("/getLogo", auth, getLogo)
 adminRegister.put("/changePassword", changePasswordController)
 adminRegister.post("/sendOtpChangePassword", sendOtpChangePassword)
 adminRegister.post("/checkForgotPasswordOtp", checkForgotPasswordOtp)
-
+adminRegister.delete("/deleteJob/:id", DeleteJob)
 
 
 
