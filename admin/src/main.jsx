@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import Dashboard from './pages/Dashboard.jsx'
 import { ToastContainer, Flip } from 'react-toastify'
+import WrongRoute from './components/WrongRoute.jsx'
 
 
 
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
 
   }, {
     path: "*",
-    element: "You are at wrong route"
+    element: <WrongRoute/>
 
   },
 ])

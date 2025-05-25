@@ -72,10 +72,11 @@ const viewController = async (req, res) => {
 };
 
 const AdminRegisterController = async (req, res) => {
-
+     const { uname, uemail, upassword } = req.body;
+     const filename = req.file.filename;
+     const payload = { email: uemail };
+     const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1d" });
      try {
-          const { uname, uemail, upassword } = req.body;
-          const filename = req.file.filename;
           const hashPass = await bcrypt.hash(upassword, saltRounds)
           const newAdmin = new adminRegisterModel({
                uname,
@@ -86,7 +87,7 @@ const AdminRegisterController = async (req, res) => {
 
           await newAdmin.save();
 
-          res.status(201).json({ message: "Admin registered successfully", admin: newAdmin });
+          res.status(201).json({ message: "Admin registered successfully", token });
      } catch (error) {
           res.status(500).json({ error: "Internal Server Error" });
      }

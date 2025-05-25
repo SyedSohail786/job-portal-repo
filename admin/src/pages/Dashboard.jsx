@@ -5,6 +5,7 @@ import AddJob from '../components/AddJob';
 import ManageJobs from '../components/ManageJobs';
 import Applicants from '../components/Applicants';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 export default function Dashboard() {
@@ -16,6 +17,7 @@ export default function Dashboard() {
     if (token) {
       navigate("/dashboard");
     } else {
+      toast.error("Login to Continue")
       navigate("/"); // No token? Force login
     }
   }, []);

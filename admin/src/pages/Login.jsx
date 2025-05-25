@@ -85,7 +85,7 @@ export default function Login() {
 
                          setUserRegisterData({ uemail: loginEmail });
                          Cookies.set('_sessionfastJob', JSON.stringify(loginEmail))
-
+                         const token = localStorage.getItem("token")
                          axios.post(`${staticAdminPath}getLogo`, { loginEmail }, {
                               headers: { Authorization: `Bearer ${token}` }
                          })
