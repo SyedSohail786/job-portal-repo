@@ -37,7 +37,7 @@ export default function AddJob() {
           const level = e.target.level.value
           const salary = e.target.salary.value
           const adminEmail = userRegisterData.uemail
-          const adminImage = `${staticPath}/uploads/CompaniesLogo/` + logoUrl
+          const adminImage = `${staticPath}uploads/CompaniesLogo/` + logoUrl
           const adminName = userName
           const dataObj = { title, description, category, location, level, salary, adminEmail, adminImage, adminName }
           const token = localStorage.getItem("token");
