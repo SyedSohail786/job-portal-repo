@@ -14,7 +14,7 @@ export default function Applied() {
   const [resume, setResume] = useState(null)
   const { clerkUser, setClerkUser, setGotResume, gotResume } = useContext(allContext);
   const [jobsApplied, setJobApplied] = useState([])
-
+  const [loading, setLoading] = useState(true)
 
   const resumeSubmit = (e) => {
     e.preventDefault();
@@ -50,14 +50,17 @@ export default function Applied() {
 
 
   useEffect(() => {
+    setLoading(false)
     const userEmail = localStorage.getItem("_sessionEmail")
-    console.log(userEmail)
     if (userEmail) {
       axios.post(`${WEBSITE_API_BASE_URL}/website/getResume`, { userEmail })
         .then((res) => setGotResume(res.data.resumeName))
 
       axios.post(`${WEBSITE_API_BASE_URL}/website/appliedJobs`, { userEmail })
-        .then((res) => setJobApplied(res.data))
+        .then((res) => {
+          setJobApplied(res.data)
+          setLoading(true)
+        })
     }
 
 
@@ -70,7 +73,7 @@ export default function Applied() {
         <Navbar />
 
         {
-          jobsApplied.length > 0 ?
+          loading ?
 
             <div className='max-w-[1320px] mx-auto  mt-5 py-5 px-2 min-h-[72vh] 2xl:px-20  '>
               <h1 className='text-lg font-semibold '>Your Resume</h1>
@@ -114,45 +117,73 @@ export default function Applied() {
 
               </div>
 
+              {
+                jobsApplied.length > 0 ?
 
 
-              <div>
-                <h2 className='text-sm font-semibold my-3 '>Job Applied</h2>
-                <table className='border border-gray-300 min-w-full rounded-lg bg-white text-sm' >
-                  <thead>
-                    <tr>
-                      <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Company</th>
-                      <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Job Title</th>
-                      <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left max-sm:hidden'>Location</th>
-                      <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left max-sm:hidden'>Date</th>
-                      <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      jobsApplied.map((items, index) => true ? (
-                        <tr className='px-4 py-3 border-b border-gray-300 text-left' key={index}>
-                          <td className='flex items-center py-5 gap-2 text-left px-5 max-sm:px-1 '>
-                            <img src={items.adminImage} alt="" className='w-6 h-6' />
-                            {items.adminName}
-                          </td>
-                          <td className='px-4 py-2' >{items.jobTitle} </td>
-                          <td className='px-4 py-2 max-sm:hidden'>{items.jobLocation}</td>
-                          <td className='px-4 py-2 max-sm:hidden'>
-                            {moment(items.date).format("ll")}
-                          </td>
-                          <td className='px-4 py-2 max-sm:px-1'>
-                            <span className={` py-2 rounded ${items.action === 1 ? " bg-green-200 text-green-900 px-2" : items.action === 0 ? " bg-red-300 text-red-900 px-2" : "bg-blue-300 text-blue-900 px-3"}`}>
-                              {items.action === 1 ? "Accepted" : items.action === 0 ? "Rejected" : "Pending"}
-                            </span>
-
-                          </td>
+                  <div>
+                    <h2 className='text-sm font-semibold my-3 '>Job Applied</h2>
+                    <table className='border border-gray-300 min-w-full rounded-lg bg-white text-sm' >
+                      <thead>
+                        <tr>
+                          <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Company</th>
+                          <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Job Title</th>
+                          <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left max-sm:hidden'>Location</th>
+                          <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left max-sm:hidden'>Date</th>
+                          <th className='px-3 py-3 border-b max-sm:px-1 border-gray-300 text-left'>Status</th>
                         </tr>
-                      ) : (null))
-                    }
-                  </tbody>
-                </table>
-              </div>
+                      </thead>
+                      <tbody>
+                        {
+                          jobsApplied.map((items, index) => true ? (
+                            <tr className='px-4 py-3 border-b border-gray-300 text-left' key={index}>
+                              <td className='flex items-center py-5 gap-2 text-left px-5 max-sm:px-1 '>
+                                <img src={items.adminImage} alt="" className='w-6 h-6' />
+                                {items.adminName}
+                              </td>
+                              <td className='px-4 py-2' >{items.jobTitle} </td>
+                              <td className='px-4 py-2 max-sm:hidden'>{items.jobLocation}</td>
+                              <td className='px-4 py-2 max-sm:hidden'>
+                                {moment(items.date).format("ll")}
+                              </td>
+                              <td className='px-4 py-2 max-sm:px-1'>
+                                <span className={` py-2 rounded ${items.action === 1 ? " bg-green-200 text-green-900 px-2" : items.action === 0 ? " bg-red-300 text-red-900 px-2" : "bg-blue-300 text-blue-900 px-3"}`}>
+                                  {items.action === 1 ? "Accepted" : items.action === 0 ? "Rejected" : "Pending"}
+                                </span>
+
+                              </td>
+                            </tr>
+                          ) : (null))
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                  :
+                  <>
+                    <div className="flex items-center justify-center min-h-[60vh] px-4">
+                      <div className="text-center max-w-md bg-white p-6 rounded-2xl ">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+                          alt="No Jobs"
+                          className="w-24 h-24 mx-auto mb-4 opacity-80"
+                        />
+                        <h2 className="text-xl font-bold mb-2">
+                          No Job Applications Found
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          You haven't applied for any jobs yet. Start exploring and apply now to kick-start your career!
+                        </p>
+                        <button
+                          onClick={() => window.location.href = '/'}
+                          className="mt-5 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition"
+                        >
+                          Browse Jobs
+                        </button>
+                      </div>
+                    </div>
+                  </>
+              }
+
             </div>
             :
 
