@@ -11,16 +11,16 @@ export default function JobList() {
      const [selectedJob, setSelectedJob] = useState([])
      const [selectedLocation, setSelectedLocation] = useState([])
      const [filteredJobs, setFilteredJobs] = useState(jobsData)
-     const [loader, setLoader]= useState(false)
-     const [JobCategories,setJobCategories]=useState([])
-     const [JobLocations, setJobLocation]=useState([])
+     const [loader, setLoader] = useState(false)
+     const [JobCategories, setJobCategories] = useState([])
+     const [JobLocations, setJobLocation] = useState([])
 
-     useEffect(()=>{
+     useEffect(() => {
           axios.get(`${WEBSITE_API_BASE_URL}/website/viewCategory`)
-          .then((res)=>setJobCategories(res.data.msg))
+               .then((res) => setJobCategories(res.data.msg))
           axios.get(`${WEBSITE_API_BASE_URL}/website/viewCategoryLocation`)
-          .then((res)=>setJobLocation(res.data.msg))
-     },[])
+               .then((res) => setJobLocation(res.data.msg))
+     }, [])
 
      const handleJobsChange = (category) => {
           setSelectedJob(
@@ -32,25 +32,27 @@ export default function JobList() {
                prev => prev.includes(location) ? prev.filter(c => c !== location) : [...prev, location]
           )
      }
+
+     //auto refresh joblist
      useEffect(() => {
           fetchJobs()
           const interval = setInterval(fetchJobs, 60000) // refresh every 60 seconds and fetch job data from api
           return () => clearInterval(interval)
      }, [])
 
+     //Jobs and Location Search Logic 
      useEffect(() => {
-     const matchesCategory = job => selectedJob.length === 0 || selectedJob.includes(job.jobCategory);
-     const matchesLocation = job => selectedLocation.length === 0 || selectedLocation.includes(job.jobLocation);
-     const matchesTitle = job => searchValue.title === "" || job.title.toLowerCase().includes(searchValue.title.toLowerCase());
-     const matchesSearchLocation = job => searchValue.location === "" || job.jobLocation.toLowerCase().includes(searchValue.location.toLowerCase());
-
-     const newFilteredJobs = jobsData.slice().reverse().filter(
-          job => matchesCategory(job) && matchesLocation(job) && matchesTitle(job) && matchesSearchLocation(job)
-     );
-     setFilteredJobs(newFilteredJobs);
-     setLoader(true);
-     setCurrentPage(1);
-}, [jobsData, selectedJob, selectedLocation, searchValue]);
+          const matchesCategory = job => selectedJob.length === 0 || selectedJob.includes(job.jobCategory);
+          const matchesLocation = job => selectedLocation.length === 0 || selectedLocation.includes(job.jobLocation);
+          const matchesTitle = job =>!searchValue.title?.trim() ||job.jobTitle?.toLowerCase().includes(searchValue.title.trim().toLowerCase());
+          const matchesSearchLocation = job => searchValue.location === "" || (job.jobLocation && job.jobLocation.toLowerCase().includes(searchValue.location.toLowerCase()));
+          const newFilteredJobs = jobsData.slice().reverse().filter(
+               job => matchesCategory(job) && matchesLocation(job) && matchesTitle(job) && matchesSearchLocation(job)
+          );
+          setFilteredJobs(newFilteredJobs);
+          setLoader(true);
+          setCurrentPage(1);
+     }, [jobsData, selectedJob, selectedLocation, searchValue]);
 
      return (
           <div className='container flex flex-col mx-auto 2xl:px-20 lg:flex-row'>
@@ -199,7 +201,7 @@ export default function JobList() {
 
                               <div className=' w-full h-screen flex justify-center items-center'>
 
-                              <div  className='mr-4'>Fast Job</div>
+                                   <div className='mr-4'>Fast Job</div>
                                    <div role="status" className='justify-center items-center' >
                                         <svg aria-hidden="true" className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
