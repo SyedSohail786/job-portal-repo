@@ -10,7 +10,7 @@ export default function Footer() {
         </span>
         <div className='flex gap-3 items-center max-sm:flex-col max-md:flex-col'>
 
-          <p className="text-gray-500 text-center"> Developed By Syed Sohail </p>
+          <p className="text-gray-500 text-center"> Developed By Syed Sohail with ❤️</p>
           <ul className="flex gap-4 items-center text-sm ">
             <li>
               <a href="https://shorturl.at/lQKhS">
